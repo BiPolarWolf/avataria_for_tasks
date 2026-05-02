@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --color-*: initial;
+  --color-white: #fff;
+  --color-purple: #3f3cbb;
+  --color-paper-red: #997476;
+  --color-paper-orange: #c2a28a;
+  --color-paper: #f5d5bc;
+}
+
+@font-face {
+  font-family: 'MyPixelFont';
+  src: url('fonts/san-francisco.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+body {
+    background-image: url("images/battleback1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+    min-height: 100vh; 
+    font-family: "MyPixelFont";
+
+}
+
+
+.parent {
+    display: flex;
+    justify-content: center; /* Центрирует по горизонтали */
+    align-items: center;     /* Центрирует по вертикали */
+}
+
+.list_color {
+    background-color: #f5d5bc;
+}
