@@ -13,8 +13,8 @@ onMounted(() => {
   const config = {
     type: Phaser.AUTO,
     parent: 'phaser-container', // ID элемента выше
-    width: 1000,
-    height: 800,
+    width: 500,
+    height: 500,
     scene: HomeScene,
     physics: {
       default: 'arcade',
@@ -36,25 +36,15 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="game-wrapper">
-    <!-- Контейнер, куда Phaser "вставит" игру -->
     <div id="phaser-container" ref="gameContainer"></div>
-  </div>
 </template>
 
 
 <style scoped>
-.game-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
+
 
 #phaser-container {
-  border: 4px solid #42b983;
-  border-radius: 8px;
-  overflow: hidden;
+
 }
 
 .ui-panel {
@@ -63,9 +53,4 @@ onUnmounted(() => {
   border-radius: 10px;
 }
 
-button {
-  margin: 5px;
-  padding: 10px;
-  cursor: pointer;
-}
 </style>

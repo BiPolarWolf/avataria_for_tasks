@@ -16,6 +16,7 @@ def get_tasks(user:current_active_user_dep,session:SessionDep):
     service = TaskService(session)
     return service.get_tasks(user)
 
+
 @router.post("/create")
 def create_task(task_data:TaskCreate,user:current_active_user_dep,session:SessionDep):
     service = TaskService(session)
@@ -24,7 +25,7 @@ def create_task(task_data:TaskCreate,user:current_active_user_dep,session:Sessio
 
 
 @router.get("/{task_id}/complete")
-def get_task(task_id: int,user:current_active_user_dep,session:SessionDep):
+def complete_task(task_id: int,user:current_active_user_dep,session:SessionDep):
     service = TaskService(session)
 
     try:
