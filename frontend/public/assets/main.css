@@ -10,11 +10,20 @@
 }
 
 @font-face {
-  font-family: 'MyPixelFont';
+  font-family: 'SanFrancisco';
   src: url('fonts/san-francisco.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
+
+
+@font-face {
+  font-family: 'Pixel';
+  src: url('fonts/minecraft.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 
 
@@ -25,7 +34,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed; 
     min-height: 100vh; 
-    font-family: "MyPixelFont";
+    font-family: "SanFrancisco";
 
 }
 

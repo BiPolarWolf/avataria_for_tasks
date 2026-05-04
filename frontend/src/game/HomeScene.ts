@@ -1,51 +1,93 @@
 import Phaser from 'phaser';
-
+import { Player , type PlayerConfig } from './Player';
 export default class HomeScene extends Phaser.Scene {
-  // 1. Объявляем свойства класса вне конструктора для типизации
-  private items: Phaser.GameObjects.Rectangle[];
+  player !: Player
+  background !: Phaser.GameObjects.TileSprite
+  cursors !: Phaser.Types.Input.Keyboard.CursorKeys
 
   constructor() {
     super('HomeScene');
-    this.items = []; // Теперь TS знает, что это массив прямоугольников
   }
 
   preload(): void {
+
+
     // Рекомендуется указывать возвращаемый тип функций (: void)
     this.load.image('room', 'https://labs.phaser.io/assets/skies/space3.png');
     // Исправьте путь, если музыка не грузится
     this.load.audio('music',['assets/audio/music.mp3']);
+    // 'bg_square' — это ключ, по которому мы будем обращаться к картинке
+    this.load.image('wood_floor', 'assets/images/wood_floor.png');
+
+    this.load.image('player','assets/images/player1.png')
+
   }
 
   create(): void {
-    // Фон комнаты
-    this.add.image(500, 500, 'room').setScale(2);
 
-    this.sound.add('music').play({
-         loop : true   
-        })
+    const width = 1000
+    const height = 800
+
+    const roomWidth = 1200;
+    const roomHeight = 1200;
 
 
-    // Текст-приветствие
-    this.add.text(20, 20, "Мой Уютный Дом", {
-      fontSize: '24px',
-      color: '#ffffff' // В объекте стилей текста лучше использовать 'color' вместо 'fill'
-    });
 
-    // 2. Слушаем событие. Чтобы TS не ругался на game.events, 
-    // можно использовать eventEmitter сцены или привести типы
-    this.game.events.on('addItem', (itemType: string) => {
-      this.addNewItem(itemType);
-    });
+    const config : PlayerConfig = {
+      scene : this,
+      position : {x:width/2,y:height/2},
+      assetKey : 'player',
+      frame : 1
+
+    }
+
+    this.background = this.add.tileSprite(0,0,roomWidth,roomHeight,'wood_floor')
+
+    this.background.setOrigin(0,0);
+    this.background.setTileScale(0.5);
+
+
+    this.physics.world.setBounds(0,0,roomWidth,roomHeight);
+    this.cameras.main.setBounds(0, 0, roomWidth, roomHeight);
+
+
+    this.player = new Player(config);
+
+
+
+    (this.player.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
+
+    this.cameras.main.startFollow(this.player,true, 0.1, 0.1)
+    this.cameras.main.setZoom(1.5); // Чуть приблизим для уюта
+
+
+    if (this.input.keyboard) {
+        this.cursors = this.input.keyboard.createCursorKeys();
+    }
+
   }
 
-  // 3. Указываем тип для аргумента itemType
-  addNewItem(itemType: string): void {
-    const x = Phaser.Math.Between(100, 700);
-    const y = Phaser.Math.Between(100, 500);
-    
-    const rect = this.add.rectangle(x, y, 50, 50, 0x00ff00);
-    this.add.text(x - 20, y - 40, itemType, { fontSize: '12px' });
-    
-    this.items.push(rect);
+  update (){
+
+    const speed = 400
+
+    this.player.setVelocity(0)
+
+  // Обработка ввода
+        if (this.cursors.left.isDown) {
+            this.player.setVelocityX(-speed);
+        } else if (this.cursors.right.isDown) {
+            this.player.setVelocityX(speed);
+        }
+
+        if (this.cursors.up.isDown) {
+            this.player.setVelocityY(-speed);
+        } else if (this.cursors.down.isDown) {
+            this.player.setVelocityY(speed);
+        }
+
+    // тут будет какой то код
+
   }
+
 }

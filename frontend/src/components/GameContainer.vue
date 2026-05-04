@@ -3,6 +3,8 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import Phaser from 'phaser';
 import HomeScene from '../game/HomeScene.js'
+import { Input } from 'postcss';
+
 
 const gameContainer = ref(null);
 let gameInstance = null;
@@ -12,24 +14,17 @@ onMounted(() => {
     type: Phaser.AUTO,
     parent: 'phaser-container', // ID элемента выше
     width: 1000,
-    height: 700,
+    height: 800,
     scene: HomeScene,
     physics: {
       default: 'arcade',
-      arcade: { gravity: { y: 0 } }
-    }
+      arcade: { debug : false}
+    },
   };
 
   gameInstance = new Phaser.Game(config);
 });
 
-// Метод для покупки
-const buyFurniture = (name) => {
-  if (gameInstance) {
-    // Отправляем событие внутрь Phaser
-    gameInstance.events.emit('addItem', name);
-  }
-};
 
 // Удаляем игру при закрытии компонента, чтобы не тратить память
 onUnmounted(() => {
@@ -44,12 +39,6 @@ onUnmounted(() => {
   <div class="game-wrapper">
     <!-- Контейнер, куда Phaser "вставит" игру -->
     <div id="phaser-container" ref="gameContainer"></div>
-    
-    <div class="ui-panel">
-      <h3>Магазин мебели</h3>
-      <button @click="buyFurniture('Кровать')">Купить Кровать (100$)</button>
-      <button @click="buyFurniture('Стул')">Купить Стул (50$)</button>
-    </div>
   </div>
 </template>
 
