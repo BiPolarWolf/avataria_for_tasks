@@ -20,3 +20,17 @@ class AuthException(HTTPException):
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+
+class TaskNotFoundError(ServiceError):
+    """Task не найден в базе"""
+    pass
+
+class TaskIncorrectAuthorError(ServiceError):
+    """Юзер не является автором Task"""
+    pass
+
+
+class  TaskCompletedAlreadyError(ServiceError):
+    """Задача уже выполнена"""
+    pass

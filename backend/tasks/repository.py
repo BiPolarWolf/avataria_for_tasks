@@ -16,8 +16,8 @@ class TaskRepository:
         return task if task else None
     
 
-    def get_tasks_all(self, author:User) -> List[Task]:
-        query = select(Task).where(Task.author_id == author.id)
+    def get_tasks_all(self, current_user:User) -> List[Task]:
+        query = select(Task).where(Task.author_id == current_user.id)
         tasks = self.db.exec(query).all()
         return tasks
     
@@ -27,6 +27,7 @@ class TaskRepository:
         self.db.commit()
         self.db.refresh(task)
         return  task
+
 
 
     def create_task(self,task:Task) -> Task:
