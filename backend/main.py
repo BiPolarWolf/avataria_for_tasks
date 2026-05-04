@@ -5,6 +5,7 @@ from exceptions import AuthException
 from database import create_db_and_tables
 from contextlib import asynccontextmanager
 from users.routes import router as users_router
+from tasks.routes import router as tasks_router
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
 from users.security import  Token , authenticate_user , create_access_token
@@ -31,6 +32,7 @@ async def lifespan(app:FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(users_router)
+app.include_router(tasks_router)
 
 
 # Настройка CORS

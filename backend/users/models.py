@@ -1,5 +1,10 @@
 
-from sqlmodel import SQLModel, Field, UniqueConstraint
+from sqlmodel import SQLModel, Field, UniqueConstraint , Relationship
+from typing import List , TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from tasks.models import Task
 
 # Общие поля
 class UserBase(SQLModel):
@@ -25,6 +30,8 @@ class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     hashed_password: str
     is_verified : bool = Field(default=False)
+
+    tasks : List['Task'] = Relationship(back_populates='author')
 
 
 class Profile(SQLModel):
