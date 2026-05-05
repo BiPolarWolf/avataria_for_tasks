@@ -1,9 +1,28 @@
 <script setup lang="ts">
 import { ref, onMounted , type Ref } from 'vue'
 import axios from 'axios'
+import MyCard from '@/components/MyCard.vue'
+import { formatShortDate } from '@/utils/general'
+import { useToast , Button, } from 'primevue'
+import TaskDetailDialog from './TaskDetailDialog.vue'
+
+const toast = useToast()
+
+const task_detail_visible: Ref<boolean> = ref(false)
+const selected_task_id : Ref<number | null> = ref(null)
+
+
+
+
+
+const show_task_detail = (task_id:number) => {
+    task_detail_visible.value = true;
+    selected_task_id.value = task_id
+};
 
 const data: Ref<any[]> = ref([])
 const message = ref('')
+
 
 onMounted(async () => {
   try {
@@ -23,19 +42,34 @@ onMounted(async () => {
     message.value = "Ошибка связи с бэкендом"
   }
 })
+
+
+
+
+
 </script>
 
 <template>
-    
-  <div style="text-align: center;">
+    <TaskDetailDialog v-model:visible="task_detail_visible"/>
+    <MyCard class="my-3" v-for="task in data">
+      <template #content>
+      {{ task.description }}
+      </template>
+      
+      <template #subtitle> 
+        {{ formatShortDate(task.created_at) }}
+      </template>
 
-    <p class="border-2 mb-1" v-for="value in data">
-        {{ value.description }}
-    </p>
+      <template #buttons>
+
+      <Button v-on:click="show_task_detail(task.id)" size="small" severity="contrast">
+          Опции <i class="pi pi-cog"></i>
+        </Button>
+      </template>
+
+    </MyCard>
 
     <p v-if="message">{{ message }}</p>
 
-  </div>
-  
 
 </template>

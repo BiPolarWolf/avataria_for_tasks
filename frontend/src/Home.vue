@@ -2,7 +2,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-import GameContainer from '../src/components/GameContainer.vue'
 
 const message = ref('')
 
