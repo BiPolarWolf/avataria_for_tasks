@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import GameContainer from '@/GameContainer.vue'
-import {SplitterPanel, Splitter} from 'primevue';
+import {ScrollPanel} from 'primevue';
 
 import { Toast } from 'primevue';
 
@@ -13,7 +13,7 @@ import { Toast } from 'primevue';
 
       <div class="basis-6/12 bg-paper">
 
-       <nav class="p-4 bg-paper-orange">
+       <nav class="p-4 bg-paper-orange h-1/12">
           <RouterLink class="p-2 bg-gray-500" to="/"> Главная </RouterLink>
           <RouterLink class="p-2 bg-gray-500 " to="/about"> О проекте </RouterLink>
           <RouterLink class="p-2 bg-gray-500" to="/profile"> О нас </RouterLink> 
@@ -21,17 +21,31 @@ import { Toast } from 'primevue';
           <RouterLink class="p-2 bg-gray-500 " to="/login"> Войти </RouterLink>
         </nav>
 
-        <div class="p-4 m-auto h-max bg-paper mt-2">
-          <RouterView class="h-max" />
+        <div class="m-auto h-11/12 bg-paper">
+        <ScrollPanel class="custom_scroll_panel" style="width: 98%; height: 100%; padding: 10px;"  >
+          <RouterView />
+        </ScrollPanel>
         </div>
 
+
       </div>
-      <div class="basis-6/12 bg-paper-orange">
+      <div class="basis-6/12 bg-paper-orange window">
         <GameContainer/>
       </div>
   </div>
 
 
-
 </template>
+
+<style scoped>
+
+.custom_scroll_panel :deep(.p-scrollpanel-bar-y){
+    background-color: rgb(115 85 63);
+}
+
+.window{
+  border: 15px solid rgb(115 85 63);
+}
+
+</style>
 
