@@ -1,18 +1,30 @@
+from enum import Enum
 from .repository import TaskRepository
 from sqlmodel import Session
 from .models import Task, TaskCreate
 from users.models import User
+from typing import Optional
 from exceptions import TaskCompletedAlreadyError, TaskIncorrectAuthorError,TaskNotFoundError
 
 
+class TaskStatus(str, Enum):
+    active = "active"
+    completed = "completed"
 
 class TaskService:
     def __init__(self,db:Session):
         self.repo = TaskRepository(db)
 
-    
-    def get_tasks(self, current_user : User):
-        tasks = self.repo.get_tasks_all(current_user)
+    def get_tasks(self, current_user : User, status: Optional[TaskStatus] = None):
+
+        if status == TaskStatus.active:
+            tasks = self.repo.get_tasks_active(current_user)
+
+        elif status == TaskStatus.completed:
+            tasks = self.repo.get_tasks_completed(current_user)
+
+        else:
+            tasks = self.repo.get_tasks_all(current_user)
         return tasks
 
 

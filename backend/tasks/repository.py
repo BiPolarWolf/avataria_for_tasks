@@ -1,4 +1,4 @@
-from sqlmodel import Session, select
+from sqlmodel import Session, select ,desc
 from .models import Task
 from users.models import User
 from typing import List
@@ -18,6 +18,17 @@ class TaskRepository:
 
     def get_tasks_all(self, current_user:User) -> List[Task]:
         query = select(Task).where(Task.author_id == current_user.id)
+        tasks = self.db.exec(query).all()
+        return tasks
+    
+
+    def get_tasks_active(self, current_user:User) -> List[Task]:
+        query = select(Task).where(Task.author_id == current_user.id,Task.status == False).order_by(desc(Task.created_at))
+        tasks = self.db.exec(query).all()
+        return tasks
+    
+    def get_tasks_completed(self, current_user:User) -> List[Task]:
+        query = select(Task).where(Task.author_id == current_user.id,Task.status == True).order_by(desc(Task.created_at))
         tasks = self.db.exec(query).all()
         return tasks
     

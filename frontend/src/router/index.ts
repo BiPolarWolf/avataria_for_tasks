@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/Home.vue'
 import About from '@/About.vue'
-import TaskList from '@/tasks/TaskList.vue'
+
 const routes = [
     {
     path: '/',
@@ -16,7 +16,7 @@ const routes = [
     path: '/tasks',
     name: 'tasks',
     // Ленивая загрузка (компонент подгрузится только при переходе)
-    component: () => import('../tasks/TaskList.vue')
+    component: () => import('../tasks/TaskTabs.vue')
   },
   {
     path: '/profile',

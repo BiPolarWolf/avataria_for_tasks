@@ -48,8 +48,9 @@ const show = () => {
 /* Стили для самого контейнера карты */
 .custom-card {
     text-align: left;
-    background-color: #ffede0;
+    background-color: #f6d6bd;
     border: 2.5px solid #927878;
+    color : #826373;
 }
 
 

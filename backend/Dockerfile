@@ -16,4 +16,5 @@ COPY . .
 # Команда для запуска приложения
 # 0.0.0.0 нужен, чтобы Docker пробрасывал порты наружу
 # uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+# uvicorn main:app  --reload
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -3,7 +3,7 @@ import { createApp } from 'vue'
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import ToastService from 'primevue/toastservice';
-
+import { VueQueryPlugin } from '@tanstack/vue-query';
 
 
 import App from './App.vue'
@@ -19,4 +19,5 @@ app.use(PrimeVue, {
 });
 app.use(router) // Подключаем роутер
 app.use(ToastService)
+app.use(VueQueryPlugin)
 app.mount('#app')

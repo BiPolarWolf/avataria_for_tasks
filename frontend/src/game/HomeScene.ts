@@ -62,7 +62,12 @@ export default class HomeScene extends Phaser.Scene {
 
 
     if (this.input.keyboard) {
-        this.cursors = this.input.keyboard.createCursorKeys();
+        this.cursors = this.input.keyboard.addKeys({
+          up: Phaser.Input.Keyboard.KeyCodes.UP,
+          down: Phaser.Input.Keyboard.KeyCodes.DOWN,
+          left: Phaser.Input.Keyboard.KeyCodes.LEFT,
+          right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+        }) as Phaser.Types.Input.Keyboard.CursorKeys;
     }
 
   }
