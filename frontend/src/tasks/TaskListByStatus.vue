@@ -3,7 +3,8 @@ import { useQuery} from '@tanstack/vue-query'
 import axios from 'axios'
 import MyCard from '@/components/MyCard.vue'
 import { formatShortDate } from '@/utils/general'
-import { useToast , Button ,ProgressSpinner} from 'primevue'
+import { useToast , Button ,ProgressSpinner, Image} from 'primevue'
+
 
 interface Props {
   status: "active" | 'completed'
@@ -13,7 +14,7 @@ const props = defineProps<Props>()
 
 const toast = useToast()
 
-const show = () => {
+const complete_task = () => {
     toast.add({ severity: 'info', summary: 'Не имплементировано', detail: 'Вы должны заменить Кнопку на свою', life: 3000 });
 };
 
@@ -47,6 +48,7 @@ const {isPending, isFetching, isError, data, error } = useQuery({
         <p>{{ task.description }} </p>
         <p><i v-for="value in task.complexity" class="pi pi-star"></i> </p>
         </template>
+
         
         <template #subtitle> 
             {{ formatShortDate(task.created_at) }}
@@ -54,8 +56,8 @@ const {isPending, isFetching, isError, data, error } = useQuery({
 
         <template #buttons>
 
-        <Button v-on:click="show" size="small" severity="contrast">
-            Опции <i class="pi pi-cog"></i>
+        <Button v-on:click="complete_task" size="small" class="detail_button">
+            Детали <i class="pi pi-file"></i>
             </Button>
         </template>
 
@@ -64,4 +66,11 @@ const {isPending, isFetching, isError, data, error } = useQuery({
 </template>
 
 <style scoped>
+
+.detail_button{
+  background-color: var(--color-secondary-500);
+  border: 4px solid var(--color-secondary-800);
+  color: white;
+}
+
 </style>

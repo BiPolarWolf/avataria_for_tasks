@@ -4,9 +4,7 @@ import { Dialog } from 'primevue';
 
 <template>
 <Dialog>
-
     Тут будет информация о таске
-
 </Dialog>
 </template>
 

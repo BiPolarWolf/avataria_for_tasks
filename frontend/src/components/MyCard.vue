@@ -19,7 +19,7 @@ const show = () => {
                 <slot name="content"></slot>
 
                 </div>
-                <div class="flex-none">
+                <div class="flex-none content-end">
                     <slot name="buttons">
                         <Button v-on:click="show" size="small" severity="info">
                             <i class="pi pi-info"></i>
