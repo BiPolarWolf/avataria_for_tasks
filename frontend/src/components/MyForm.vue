@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { useToast } from 'primevue/usetoast';
-import { Button } from 'primevue';
+import MyButton from './MyButton.vue';
 
 interface Props {
   title?: string;
@@ -101,9 +101,9 @@ function submit(){
 
     <div class="form_buttons">
         <slot name="buttons" :isPendind="isPending">
-            <Button type="submit" :disabled="isPending" severity="success">
-                {{ isPending ? 'Сохраняется...' : 'Сохранить' }}
-            </Button>
+            <MyButton type="submit" :disabled="isPending" severity="success">
+                {{ isPending ? 'Сохраняется...' : 'Сохранить' }} <img src="@/assets/icons/FloppyDisk.png" width="18px" alt="">
+            </MyButton>
         </slot>
     </div>
 
@@ -140,4 +140,3 @@ hr{
 }
 
 </style>
-

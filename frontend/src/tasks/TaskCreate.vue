@@ -24,6 +24,7 @@ const success_function = () =>{
 <template>
 
     <MyForm 
+        title="Создать новую задачу"
         :data="data" 
         url="tasks/create/" 
         :success_function="success_function" 

@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status
 from database import SessionDep
 from .service import TaskService
 from users.security import current_active_user_dep
-from .models import TaskCreate
+from .models import TaskCreate , TaskUpdate
 from exceptions import TaskIncorrectAuthorError , TaskNotFoundError, ServiceError ,TaskCompletedAlreadyError
 
 router = APIRouter(
@@ -34,6 +34,32 @@ def create_task(task_data:TaskCreate,user:current_active_user_dep,session:Sessio
     service = TaskService(session)
     return service.create_task(task_data,user)
 
+
+@router.post('/update')
+def update_task(task_data:TaskUpdate,user:current_active_user_dep,session:SessionDep):
+    service = TaskService(session)
+    try:
+        return service.update_task(task_data,user)
+    except TaskNotFoundError as e:
+        raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=str(e)
+        )
+    except TaskIncorrectAuthorError as e:
+        raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=str(e)
+        )
+    except TaskCompletedAlreadyError as e:
+        raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail=str(e)
+        )
+    except ServiceError:
+        raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail='Ошибка сервера'                    
+        )
 
 
 @router.get("/{task_id}/complete")

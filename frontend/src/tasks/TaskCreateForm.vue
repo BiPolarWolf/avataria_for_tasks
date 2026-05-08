@@ -2,7 +2,8 @@
 import { reactive } from 'vue'
 import axios from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { useToast, Button } from 'primevue'
+import { useToast } from 'primevue'
+import MyButton from '@/components/MyButton.vue'
 
 interface TaskCreatePayload {
   description: string
@@ -110,9 +111,9 @@ const submitForm = () => {
     </div>
 
     <div class="actions">
-      <Button type="submit" :disabled="isPending || !formData.description.trim()" severity="contrast">
+      <MyButton type="submit" :disabled="isPending || !formData.description.trim()" severity="contrast">
         {{ isPending ? 'Создаём...' : 'Создать задачу' }}
-      </Button>
+      </MyButton>
     </div>
   </form>
 </template>
