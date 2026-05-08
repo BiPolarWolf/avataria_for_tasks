@@ -1,7 +1,7 @@
 from enum import Enum
 from .repository import TaskRepository
 from sqlmodel import Session
-from .models import Task, TaskCreate
+from .models import Task, TaskCreate, TaskUpdate
 from users.models import User
 from typing import Optional
 from exceptions import TaskCompletedAlreadyError, TaskIncorrectAuthorError,TaskNotFoundError
@@ -55,10 +55,28 @@ class TaskService:
         else:
             task.status = True
             return self.repo.update_task(task)
+        
+
+    def update_task(self,task_data:TaskUpdate,current_user:User) -> Task:
+        task = self.repo.get_task_by_id(task_data.id)
+
+        if task is None: 
+            raise TaskNotFoundError('Задачи с таким id не существует')
+        
+        elif task.author_id != current_user.id:
+            raise TaskIncorrectAuthorError('Это не ваша задача')
+        
+        elif task.status is True:
+            raise TaskCompletedAlreadyError('Нельзя редактировать завершенную задачу')
+        else:
+            task.description = task_data.description
+            task.complexity = task_data.complexity
+            return self.repo.update_task(task)
+
 
     
 
-    def create_task(self,task_data:TaskCreate,current_user:User):
+    def create_task(self,task_data:TaskCreate,current_user:User) -> Task:
         task_dict = task_data.model_dump()
 
         task_dict.update({'author_id':current_user.id})
@@ -66,6 +84,8 @@ class TaskService:
         db_task = Task.model_validate(task_dict)
 
         return self.repo.create_task(db_task)
+    
+
     
 
     def task_delete(self,task_id:int):

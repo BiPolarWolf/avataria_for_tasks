@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { Card,Button} from 'primevue';
+import { Card } from 'primevue';
 import { useToast } from 'primevue/usetoast';
+import MyButton from './MyButton.vue';
 const toast = useToast();
 
 
@@ -21,9 +22,9 @@ const show = () => {
                 </div>
                 <div class="flex-none content-end">
                     <slot name="buttons">
-                        <Button v-on:click="show" size="small" severity="info">
+                        <MyButton v-on:click="show" size="small" severity="info">
                             <i class="pi pi-info"></i>
-                        </Button>
+                        </MyButton>
                     </slot>
                 </div>
 
@@ -35,6 +36,12 @@ const show = () => {
 
         <template #subtitle>
             <slot name="subtitle">
+                
+            </slot>
+        </template>
+
+        <template #footer>
+            <slot name="footer">
                 
             </slot>
         </template>

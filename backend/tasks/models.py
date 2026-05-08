@@ -25,3 +25,10 @@ class Task(SQLModel, table=True):
 class TaskCreate(SQLModel):
     description : str
     complexity : int = Field(default=1,le=5)
+
+
+class TaskUpdate(SQLModel):
+    id: int
+    description : str
+    complexity : int = Field(default=1,le=5)
+    status : bool = Field(default=False)

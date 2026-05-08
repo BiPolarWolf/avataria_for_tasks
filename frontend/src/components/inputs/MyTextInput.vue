@@ -5,7 +5,7 @@ interface Props {
   modelValue: string | number;
   label?: string;
   placeholder?: string;
-  error?: string; // Поле для вывода ошибки валидации
+  error?: string;
 }
 
 defineProps<Props>();
@@ -46,7 +46,7 @@ defineEmits(['update:modelValue']);
   font-weight: bold;
   font-size: 0.85rem;
   color: var(--color-paper-800);
-  letter-spacing: 1px;
+  padding-left: 5px;
 }
 
 .custom-pixel-input {
@@ -68,12 +68,12 @@ defineEmits(['update:modelValue']);
 
 /* Стиль ошибки */
 .input-error {
-  border-color: #a33b3b !important; /* Темно-красный под стиль бумаги */
-  background-color: #fff0f0 !important;
+  border-color: var(--color-red-800) !important; /* Темно-красный под стиль бумаги */
+  background-color: var(--color-red-100) !important;
 }
 
 .error-text {
-  color: #a33b3b;
+  color: var(--color-red-800);
   font-size: 0.8rem;
   font-weight: bold;
 }
