@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { useToast } from 'primevue'
 import MyButton from '@/components/MyButton.vue'
 import MyDialog from '@/components/MyDialog.vue'
-import { playSuccessSound } from '@/composable/useSound'
+
 interface Props {
   taskId: number
   taskDescription?: string
@@ -17,14 +17,14 @@ const visible = ref(false)
 const toast = useToast()
 const queryClient = useQueryClient()
 
-const completeTask = async () => {
+const deleteTask = async () => {
   const token = localStorage.getItem('access_token')
 
   if (!token) {
     throw new Error('Сначала войдите в аккаунт')
   }
 
-  const response = await axios.get(`http://localhost:8000/tasks/${props.taskId}/complete`, {
+  const response = await axios.delete(`http://localhost:8000/tasks/${props.taskId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -34,24 +34,23 @@ const completeTask = async () => {
 }
 
 const { mutate, isPending } = useMutation({
-  mutationFn: completeTask,
+  mutationFn: deleteTask,
   onSuccess: async () => {
     visible.value = false
     await queryClient.invalidateQueries({ queryKey: ['tasks'] })
-    playSuccessSound()
     toast.add({
       severity: 'success',
-      summary: 'Задача выполнена',
-      detail: 'Она перенесена в завершённые задачи',
+      summary: 'Задача удалена',
+      detail: 'Она больше не отображается в списке задач',
       life: 3000
     })
   },
   onError: (error: unknown) => {
     const detail = axios.isAxiosError(error)
-      ? error.response?.data?.detail ?? 'Не удалось завершить задачу'
+      ? error.response?.data?.detail ?? 'Не удалось удалить задачу'
       : error instanceof Error
         ? error.message
-        : 'Не удалось завершить задачу'
+        : 'Не удалось удалить задачу'
 
     toast.add({
       severity: 'error',
@@ -62,24 +61,24 @@ const { mutate, isPending } = useMutation({
   }
 })
 
-const confirmComplete = () => {
+const confirmDelete = () => {
   mutate()
 }
 </script>
 
 <template>
-  <MyButton size="small" severity="success" @click="visible = true">
-    Выполнить <i class="pi pi-check"></i>
+  <MyButton size="small" severity="danger" @click="visible = true">
+    Удалить <img src="@/assets/icons/Trashbin.png" width="18" alt="">
   </MyButton>
 
   <MyDialog
     v-model:visible="visible"
     modal
-    header="Подтвердите выполнение"
+    header="Подтвердите удаление"
     :style="{ width: '28rem' }"
   >
     <div class="confirm_content">
-      <p class="confirm_text">Отметить задачу как выполненную?</p>
+      <p class="confirm_text">Удалить задачу без возможности восстановления?</p>
       <p v-if="taskDescription" class="task_preview">{{ taskDescription }}</p>
     </div>
 
@@ -88,8 +87,8 @@ const confirmComplete = () => {
         <MyButton severity="secondary" :disabled="isPending" @click="visible = false">
           Отмена
         </MyButton>
-        <MyButton severity="success" :disabled="isPending" @click="confirmComplete">
-          {{ isPending ? 'Сохраняем...' : 'Подтвердить' }}
+        <MyButton severity="danger" :disabled="isPending" @click="confirmDelete">
+          {{ isPending ? 'Удаляем...' : 'Удалить' }}
         </MyButton>
       </div>
     </template>

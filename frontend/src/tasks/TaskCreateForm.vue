@@ -69,7 +69,7 @@ const { mutate, isPending } = useMutation({
 
 const submitForm = () => {
   mutate({
-    description: formData.description.trim(),
+    description: formData.description,
     complexity: Number(formData.complexity),
   })
 }

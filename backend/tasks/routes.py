@@ -90,6 +90,29 @@ def complete_task(task_id: int,user:current_active_user_dep,session:SessionDep):
         )
 
 
+@router.delete("/{task_id}")
+def delete_task(task_id: int,user:current_active_user_dep,session:SessionDep):
+    service = TaskService(session)
+
+    try:
+        return service.task_delete(task_id,user)
+    except TaskNotFoundError as e:
+        raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=str(e)
+        )
+    except TaskIncorrectAuthorError as e:
+        raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=str(e)
+        )
+    except ServiceError:
+        raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail='Ошибка сервера'                  
+        )
+
+
 
 @router.get("/{task_id}")
 def get_task(task_id: int,user:current_active_user_dep,session:SessionDep):

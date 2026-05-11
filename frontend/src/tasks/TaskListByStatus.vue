@@ -8,6 +8,7 @@ import { useToast , ProgressSpinner} from 'primevue'
 import { ref } from 'vue'
 import TaskUpdateDialog from './TaskUpdateDialog.vue'
 import TaskCompleteConfirmButton from './TaskCompleteConfirmButton.vue'
+import TaskDeleteConfirmButton from './TaskDeleteConfirmButton.vue'
 
 
 
@@ -16,8 +17,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
-const toast = useToast()
 
 
 
@@ -62,7 +61,7 @@ const update_task = (task:any) => {
 
     <MyCard v-else class="my-3" v-for="task in data">
         <template #content>
-        <p>{{ task.description }} </p>
+        <p class="task_description">{{ task.description }}</p>
         <br>
         <p >Сложность:  <img class="w-6 inline" v-for="value in task.complexity"  src="@/assets/icons/CatHead.png" alt="()"></p>
         </template>
@@ -86,6 +85,11 @@ const update_task = (task:any) => {
               :task-id="task.id"
               :task-description="task.description"
             />
+            <TaskDeleteConfirmButton
+            v-if="props.status === 'active'"
+              :task-id="task.id"
+              :task-description="task.description"
+            />
           </div>
         </template>
 
@@ -105,6 +109,10 @@ const update_task = (task:any) => {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
+}
+
+.task_description {
+  white-space: pre-wrap;
 }
 
 </style>

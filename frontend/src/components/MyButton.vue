@@ -24,6 +24,7 @@ defineOptions({
   font-family: 'PixeloidSans', sans-serif !important;
   font-size: 0.95rem;
   line-height: 1.1;
+  font-weight: 500;
   padding: 0.75rem 1rem !important;
   text-transform: none;
   transition:
@@ -87,6 +88,16 @@ defineOptions({
 
 .my_button.p-button-success:hover:not(.p-disabled) {
   background: linear-gradient(180deg, #c8dfb6 0%, #91b56f 100%) !important;
+}
+
+.my_button.p-button-danger {
+  background: linear-gradient(180deg, #ef9a86 0%, #c84f3c 100%) !important;
+  border-color: #7f2b22 !important;
+  color: #fff8f2 !important;
+}
+
+.my_button.p-button-danger:hover:not(.p-disabled) {
+  background: linear-gradient(180deg, #f3aa98 0%, #d8614d 100%) !important;
 }
 
 .my_button.p-button-contrast,

@@ -88,10 +88,13 @@ class TaskService:
 
     
 
-    def task_delete(self,task_id:int):
+    def task_delete(self,task_id:int,current_user:User) -> Task:
         task = self.repo.get_task_by_id(task_id)
         if task is None : 
-            raise ValueError('Задача не найдена')
+            raise TaskNotFoundError('Задачи с таким id не существует')
+        
+        if task.author_id != current_user.id:
+            raise TaskIncorrectAuthorError('Это не ваша задача')
         
         return self.repo.delete_task(task)
     
