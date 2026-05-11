@@ -5,7 +5,7 @@ from .models import Task, TaskCreate, TaskUpdate
 from users.models import User
 from typing import Optional
 from exceptions import TaskCompletedAlreadyError, TaskIncorrectAuthorError,TaskNotFoundError
-
+from datetime import datetime, timezone
 
 class TaskStatus(str, Enum):
     active = "active"
@@ -54,6 +54,7 @@ class TaskService:
             raise TaskCompletedAlreadyError('Задача уже выполнена')
         else:
             task.status = True
+            task.completed_at = datetime.now(timezone.utc)
             return self.repo.update_task(task)
         
 

@@ -28,7 +28,7 @@ class TaskRepository:
         return tasks
     
     def get_tasks_completed(self, current_user:User) -> List[Task]:
-        query = select(Task).where(Task.author_id == current_user.id,Task.status == True).order_by(desc(Task.created_at))
+        query = select(Task).where(Task.author_id == current_user.id,Task.status == True).order_by(desc(Task.completed_at))
         tasks = self.db.exec(query).all()
         return tasks
     

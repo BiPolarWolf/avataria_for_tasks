@@ -21,6 +21,11 @@ class Task(SQLModel, table=True):
     status : bool = Field(default=False)
 
 
+    # Добавляем новое поле
+    # Если в итоге оно должно быть обязательным, пока всё равно ставим default (или None),
+    # чтобы SQLModel не ругался до применения миграции.
+    completed_at: datetime | None = Field(default=None)
+
 
 class TaskCreate(SQLModel):
     description : str

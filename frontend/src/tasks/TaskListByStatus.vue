@@ -67,7 +67,7 @@ const update_task = (task:any) => {
         </template>
 
         <template #subtitle> 
-            {{ formatShortDate(task.created_at) }}
+            {{ formatShortDate(task.created_at) }} {{ task.completed_at ? `- ${formatShortDate(task.completed_at)}` : "" }}
         </template>
 
 
