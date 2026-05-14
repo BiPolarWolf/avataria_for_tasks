@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { useToast } from 'primevue'
 import MyButton from '@/components/MyButton.vue'
+import api from '@/client'
 
 interface TaskCreatePayload {
   description: string
@@ -24,17 +25,7 @@ const resetForm = () => {
 }
 
 const createTask = async (payload: TaskCreatePayload) => {
-  const token = localStorage.getItem('access_token')
-
-  if (!token) {
-    throw new Error('Сначала войдите в аккаунт')
-  }
-
-  const response = await axios.post('http://localhost:8000/tasks/create', payload, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
+  const response = await api.post('/tasks/create', payload)
 
   return response.data
 }

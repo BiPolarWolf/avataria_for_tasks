@@ -1,14 +1,13 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/client'
 
 const message = ref('')
 
 onMounted(async () => {
   try {
-    // Пока указываем прямой URL, позже мы это оптимизируем
-    const response = await axios.get('http://localhost:8000/')
+    const response = await api.get('/')
     message.value = response.data.hello_world
   } catch (error) {
     console.error("Ошибка при получении данных:", error)

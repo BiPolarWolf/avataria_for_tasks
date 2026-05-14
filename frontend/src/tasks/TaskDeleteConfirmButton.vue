@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { useToast } from 'primevue'
 import MyButton from '@/components/MyButton.vue'
 import MyDialog from '@/components/MyDialog.vue'
+import api from '@/client'
 
 interface Props {
   taskId: number
@@ -18,17 +19,7 @@ const toast = useToast()
 const queryClient = useQueryClient()
 
 const deleteTask = async () => {
-  const token = localStorage.getItem('access_token')
-
-  if (!token) {
-    throw new Error('Сначала войдите в аккаунт')
-  }
-
-  const response = await axios.delete(`http://localhost:8000/tasks/${props.taskId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
+  const response = await api.delete(`/tasks/${props.taskId}`)
 
   return response.data
 }

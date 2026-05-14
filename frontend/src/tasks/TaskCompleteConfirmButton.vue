@@ -6,6 +6,7 @@ import { useToast } from 'primevue'
 import MyButton from '@/components/MyButton.vue'
 import MyDialog from '@/components/MyDialog.vue'
 import { playSuccessSound } from '@/composable/useSound'
+import api from '@/client'
 interface Props {
   taskId: number
   taskDescription?: string
@@ -18,17 +19,7 @@ const toast = useToast()
 const queryClient = useQueryClient()
 
 const completeTask = async () => {
-  const token = localStorage.getItem('access_token')
-
-  if (!token) {
-    throw new Error('Сначала войдите в аккаунт')
-  }
-
-  const response = await axios.get(`http://localhost:8000/tasks/${props.taskId}/complete`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
+  const response = await api.get(`/tasks/${props.taskId}/complete`)
 
   return response.data
 }

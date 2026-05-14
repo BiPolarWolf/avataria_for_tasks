@@ -15,7 +15,7 @@ import { Toast } from 'primevue';
 
        <nav class=" h-1/12 content-center justify-content-center justify-center">
           <RouterLink class="nav_link " to="/"> Главная </RouterLink>
-          <RouterLink class="nav_link" to="/about"> О проекте </RouterLink>
+          <RouterLink class="nav_link"  to="/about"> О проекте </RouterLink>
           <RouterLink class="nav_link" to="/profile"> О нас </RouterLink> 
           <RouterLink class="nav_link" to="/tasks"> Задачи </RouterLink> 
           <RouterLink class="nav_link" to="/login"> Войти </RouterLink>

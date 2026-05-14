@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { useToast } from 'primevue/usetoast';
 import MyButton from './MyButton.vue';
+import api from '@/client';
 
 interface Props {
   title?: string;
@@ -23,14 +24,7 @@ const queryClient = useQueryClient()
 
 
 async function inner_post_handler(data:any){
-
-    const token = localStorage.getItem('access_token')
-    if (!token) {
-        throw new Error('Сначала войдите в аккаунт')
-    }
-    const response = await axios.post(`http://localhost:8000/${props.url}`, data, {
-        headers: { Authorization: `Bearer ${token}`}
-    })
+    const response = await api.post(`/${props.url}`, data)
     return response.data
 
 }

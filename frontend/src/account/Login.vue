@@ -1,5 +1,6 @@
 <script setup>
 import { reactive, ref } from 'vue';
+import api from '@/client';
 
 const formData = reactive({
   username: '',
@@ -24,22 +25,14 @@ const login = async () => {
     // params.append('grant_type', 'password');
 
     // 2. Отправляем запрос
-    const response = await fetch('http://localhost:8000/token', {
-      method: 'POST',
+    const response = await api.post('/token', params, {
       headers: {
-        // Обязательно указываем правильный Content-Type
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      // Передаем params, никаких JSON.stringify!
-      body: params 
     });
 
-    if (!response.ok) {
-      throw new Error('Неверный логин или пароль');
-    }
-
     // 3. Получаем ответ с токеном
-    const data = await response.json();
+    const data = response.data;
     
     // 4. Сохраняем токен (например, в localStorage)
     localStorage.setItem('access_token', data.access_token);
@@ -49,7 +42,7 @@ const login = async () => {
     // router.push('/dashboard');
 
   } catch (error) {
-    errorMessage.value = error.message;
+    errorMessage.value = 'Неверный логин или пароль';
   } finally {
     isLoading.value = false;
   }

@@ -14,7 +14,6 @@ const tabs = [
 <template>
     <MyTabs :tabs="tabs" default_value="active">
 
-
       <template #create_form>
         <TaskCreate />
       </template>
