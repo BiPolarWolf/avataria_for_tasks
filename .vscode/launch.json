@@ -5,16 +5,32 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Backend: FastAPI dev",
+            "name": "Backend: FastAPI debug",
             "type": "debugpy",
             "request": "launch",
+            "python": "${workspaceFolder}/backend/venv/bin/python",
             "module": "uvicorn",
             "cwd": "${workspaceFolder}/backend",
+            "envFile": "${workspaceFolder}/.env",
+            "env": {
+                "PYDEVD_USE_SYS_MONITORING": "0"
+            },
             "args": [
                 "main:app",
-                "--reload"
+                "--host",
+                "127.0.0.1",
+                "--port",
+                "8000"
             ],
+            "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "Backend: FastAPI reload",
+            "type": "node-terminal",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/backend",
+            "command": "./venv/bin/python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000"
         },
         {
             "name": "Frontend: Vite dev",
@@ -28,7 +44,7 @@
         {
             "name": "All: Backend + Frontend",
             "configurations": [
-                "Backend: FastAPI dev",
+                "Backend: FastAPI debug",
                 "Frontend: Vite dev"
             ]
         }

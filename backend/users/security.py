@@ -6,15 +6,15 @@ import jwt
 from jwt.exceptions import InvalidTokenError
 import os
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends , HTTPException, status
+from fastapi import Depends , HTTPException ,Cookie
 
 from exceptions import AuthException
-from .models import User
+from .models import RefreshToken, User
 from pydantic import BaseModel
 from database import SessionDep
 from sqlmodel import select
 from pwdlib import PasswordHash
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 # Загружаем переменные из .env в окружение
 load_dotenv()
@@ -34,7 +34,8 @@ def get_password_hash(password: str) -> str:
 # JWT settings ------------------------------------------
 
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 15
+ACCESS_TOKEN_EXPIRE_MINUTES = 10
+REFRESH_TOKEN_EXPIRE_DAYS = 30
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 class Token(BaseModel):
@@ -51,9 +52,58 @@ def create_access_token(username:str):
     encoded_jwt = jwt.encode(to_encode,SECRET_KEY,algorithm=ALGORITHM)
     return encoded_jwt
 
+def create_refresh_token(username:str):
+    expires_at = datetime.now(timezone.utc) + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS) 
+    to_encode = {'exp': expires_at, 'sub': username}
+    encoded_jwt = jwt.encode(to_encode,SECRET_KEY,algorithm=ALGORITHM)
+    return [encoded_jwt,expires_at]
+
+
+def save_refresh_token_to_db(session: Session, user_id: int, token_string: str):
+    # 1. Рассчитываем дату истечения
+    expires_at = datetime.now(timezone.utc) + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    
+    # 2. Опционально: удаляем старые токены этого пользователя, 
+    # чтобы не копить мусор в базе (логика "один пользователь — одно устройство/сессия")
+    # Если хочешь разрешить несколько устройств, этот шаг можно пропустить
+    statement = select(RefreshToken).where(RefreshToken.user_id == user_id)
+
+    old_tokens = session.exec(statement).all()
+    for old_t in old_tokens:
+        session.delete(old_t)
+
+    # 3. Создаем объект новой миграции
+    db_refresh_token = RefreshToken(
+        token=token_string,
+        user_id=user_id,
+        expires_at=expires_at
+    )
+    
+    # 4. Сохраняем
+    session.add(db_refresh_token)
+    session.commit()
+    session.refresh(db_refresh_token)
+    
+    return db_refresh_token
+
+
+
+
+def check_valid_refresh_and_give_username(session: Session, refresh_token: str) -> str | None:
+
+    query = select(RefreshToken).where(
+        RefreshToken.token == refresh_token,
+        RefreshToken.expires_at > datetime.now(timezone.utc),
+    )
+
+    refresh_token_object = session.exec(query).first()
+
+    if refresh_token_object :
+        return decode_token(refresh_token)
+
+
+  
 # ------------------------------------------------------
-
-
 
 def authenticate_user(session: Session, username: str, password: str):
     user : User | None = session.exec(select(User).where(User.username == username)).first()
@@ -74,7 +124,7 @@ def fake_decode_token(token:str) -> str:
 
 
 
-def decode_access_token(token: str) -> str | None:
+def decode_token(token: str) -> str | None:
     """ тут будет декодироваться jwt_token с извлечением username """
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -92,7 +142,7 @@ def get_current_user(
 
 
     # тут будет декодироваться jwt_token с извлечением username
-    username = decode_access_token(token)
+    username = decode_token(token)
         
     if username is None:
         raise AuthException
@@ -114,3 +164,16 @@ def get_current_active_user(current_user : Annotated[User,Depends(get_current_us
 current_active_user_dep = Annotated[User,Depends(get_current_active_user)]
 
 
+
+def get_username_from_refresh(
+    session: SessionDep, 
+    refresh_token: Annotated[str | None, Cookie()] = None
+) -> str:
+    if not refresh_token:
+        raise HTTPException(status_code=401, detail="Refresh token missing")
+    
+    username = check_valid_refresh_and_give_username(session, refresh_token)
+    if not username:
+        raise HTTPException(status_code=401, detail="Invalid refresh token")
+        
+    return username

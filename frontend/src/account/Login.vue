@@ -42,7 +42,8 @@ const login = async () => {
     // router.push('/dashboard');
 
   } catch (error) {
-    errorMessage.value = 'Неверный логин или пароль';
+    console.error(error);
+    errorMessage.value = 'Не удалось войти. Проверь логин, пароль и доступность backend.';
   } finally {
     isLoading.value = false;
   }

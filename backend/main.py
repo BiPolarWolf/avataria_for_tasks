@@ -1,4 +1,4 @@
-
+import os
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware # Импортируем Middleware
 from exceptions import AuthException
@@ -8,10 +8,19 @@ from users.routes import router as users_router
 from tasks.routes import router as tasks_router
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
-from users.security import  Token , authenticate_user , create_access_token
+from users.security import  Token , authenticate_user , create_access_token, create_refresh_token , save_refresh_token_to_db, get_username_from_refresh
 from users.models import User
 from database import SessionDep
+from fastapi import Response 
 
+
+COOKIE_SECURE = os.getenv("COOKIE_SECURE", "false").lower() == "true"
+
+
+origins = [
+    "http://localhost:5174",  # Твой адрес фронтенда на Vite
+    "http://127.0.0.1:5174",
+]
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
@@ -38,7 +47,8 @@ app.include_router(tasks_router)
 # Настройка CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # В продакшене тут должен быть конкретный адрес
+    allow_origins=origins,
+    allow_credentials=True,    
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -58,9 +68,18 @@ def read_about():
     }
 
 
-@app.post('/token')
-def login_token(form_data:Annotated[OAuth2PasswordRequestForm,Depends()],session: SessionDep) -> Token:
+@app.post('/refresh')
+def refresh_token(username: str = Depends(get_username_from_refresh)) -> Token:
+    
+    access_token = create_access_token(username)
+    
+    return {
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
 
+@app.post('/token')
+def login_token(response: Response,form_data:Annotated[OAuth2PasswordRequestForm,Depends()],session: SessionDep):
 
     user : User | None = authenticate_user(session,form_data.username,form_data.password)
 
@@ -68,7 +87,21 @@ def login_token(form_data:Annotated[OAuth2PasswordRequestForm,Depends()],session
         raise AuthException
 
     access_token = create_access_token(user.username)
+    refresh_token,expires_at = create_refresh_token(user.username)
+    save_refresh_token_to_db(session,user.id,refresh_token)
 
-    return Token(access_token=access_token,token_type='bearer')
+    response.set_cookie(
+        key="refresh_token", 
+        value=refresh_token, 
+        httponly=True,   # Огромный плюс к безопасности: JS не видит куку
+        secure=COOKIE_SECURE,
+        samesite="lax",  # Защита от CSRF
+        expires=expires_at
+    )
 
+    return {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "token_type": "bearer"
+    }
 
