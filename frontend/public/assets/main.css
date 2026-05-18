@@ -97,6 +97,159 @@ body {
 
 }
 
+.ui-btn,
+.p-button.ui-btn,
+button.ui-btn,
+a.ui-btn {
+    --btn-bg-start: var(--color-paper-300);
+    --btn-bg-end: var(--color-paper-500);
+    --btn-bg-hover-start: var(--color-paper-200);
+    --btn-bg-hover-end: var(--color-paper-400);
+    --btn-border: var(--color-paper-800);
+    --btn-border-hover: var(--color-secondary-800);
+    --btn-text: var(--color-secondary-850);
+    --btn-shadow: rgba(15, 43, 64, 0.35);
+    --btn-shadow-hover: rgba(15, 43, 64, 0.4);
+    --btn-shadow-active: rgba(15, 43, 64, 0.28);
+    --btn-highlight: rgba(255, 255, 255, 0.28);
+    --btn-highlight-active: rgba(255, 255, 255, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(180deg, var(--btn-bg-start) 0%, var(--btn-bg-end) 100%) !important;
+    border: 3px solid var(--btn-border) !important;
+    border-radius: 0 !important;
+    box-shadow:
+      inset 0 2px 0 var(--btn-highlight),
+      4px 4px 0 var(--btn-shadow) !important;
+    color: var(--btn-text) !important;
+    font-family: 'PixeloidSans', sans-serif !important;
+    font-size: 0.95rem;
+    line-height: 1.1;
+    font-weight: 500;
+    padding: 0.75rem 1rem !important;
+    text-transform: none;
+    text-decoration: none;
+    transition:
+      transform 0.12s ease,
+      box-shadow 0.12s ease,
+      background-color 0.12s ease,
+      filter 0.12s ease;
+    cursor: pointer;
+}
+
+.ui-btn:hover:not(:disabled):not(.p-disabled) {
+    background: linear-gradient(180deg, var(--btn-bg-hover-start) 0%, var(--btn-bg-hover-end) 100%) !important;
+    border-color: var(--btn-border-hover) !important;
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 2px 0 var(--btn-highlight),
+      5px 5px 0 var(--btn-shadow-hover) !important;
+}
+
+.ui-btn:active:not(:disabled):not(.p-disabled) {
+    transform: translate(2px, 2px);
+    box-shadow:
+      inset 0 1px 0 var(--btn-highlight-active),
+      2px 2px 0 var(--btn-shadow-active) !important;
+}
+
+.ui-btn:disabled,
+.ui-btn.p-disabled {
+    opacity: 0.65;
+    filter: grayscale(0.2);
+    cursor: not-allowed;
+    box-shadow:
+      inset 0 1px 0 var(--btn-highlight-active),
+      2px 2px 0 rgba(15, 43, 64, 0.2) !important;
+}
+
+.ui-btn--sm,
+.ui-btn.p-button-sm {
+    padding: 0.55rem 0.85rem !important;
+    font-size: 0.82rem;
+}
+
+.ui-btn--icon,
+.ui-btn.p-button-icon-only {
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0 !important;
+}
+
+.ui-btn--primary,
+.ui-btn.p-button-contrast,
+.ui-btn.p-button-info {
+    --btn-bg-start: var(--color-primary-300);
+    --btn-bg-end: var(--color-primary-600);
+    --btn-bg-hover-start: var(--color-primary-200);
+    --btn-bg-hover-end: var(--color-primary-500);
+    --btn-border: var(--color-primary-900);
+    --btn-border-hover: var(--color-primary-950);
+    --btn-text: var(--color-paper-50);
+}
+
+.ui-btn--secondary,
+.ui-btn.p-button-secondary {
+    --btn-bg-start: var(--color-secondary-300);
+    --btn-bg-end: var(--color-secondary-500);
+    --btn-bg-hover-start: var(--color-secondary-200);
+    --btn-bg-hover-end: var(--color-secondary-400);
+    --btn-border: var(--color-secondary-900);
+    --btn-border-hover: var(--color-secondary-950);
+    --btn-text: var(--color-paper-50);
+}
+
+.ui-btn--success,
+.ui-btn.p-button-success {
+    --btn-bg-start: #b9d6a3;
+    --btn-bg-end: #7ea45d;
+    --btn-bg-hover-start: #c8dfb6;
+    --btn-bg-hover-end: #91b56f;
+    --btn-border: #425f2e;
+    --btn-border-hover: #314720;
+    --btn-text: #1f2d14;
+}
+
+.ui-btn--danger,
+.ui-btn.p-button-danger {
+    --btn-bg-start: #ef9a86;
+    --btn-bg-end: #c84f3c;
+    --btn-bg-hover-start: #f3aa98;
+    --btn-bg-hover-end: #d8614d;
+    --btn-border: #7f2b22;
+    --btn-border-hover: #652018;
+    --btn-text: #fff8f2;
+}
+
+.ui-btn--ghost,
+.ui-btn.p-button-outlined {
+    --btn-bg-start: rgba(252, 248, 243, 0.72);
+    --btn-bg-end: rgba(241, 226, 204, 0.78);
+    --btn-bg-hover-start: rgba(252, 248, 243, 0.92);
+    --btn-bg-hover-end: rgba(238, 209, 185, 0.92);
+    --btn-border: var(--color-paper-700);
+    --btn-border-hover: var(--color-secondary-800);
+    --btn-text: var(--color-secondary-900);
+}
+
+.ui-btn--text,
+.ui-btn.p-button-text {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.ui-btn .p-button-label,
+.ui-btn .p-button-icon {
+    position: relative;
+}
+
+.ui-btn .p-button-icon {
+    font-size: 0.95rem;
+}
+
 
 .parent {
     display: flex;

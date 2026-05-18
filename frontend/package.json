@@ -21,6 +21,7 @@
     "@tanstack/vue-query": "^5.100.9",
     "axios": "^1.13.6",
     "phaser": "^4.1.0",
+    "pinia": "^3.0.4",
     "primeicons": "^7.0.0",
     "primevue": "^4.5.5",
     "vue": "^3.5.29",

@@ -2,8 +2,11 @@
 <script setup lang="ts">
 import GameContainer from '@/GameContainer.vue'
 import {ScrollPanel} from 'primevue';
-
+import { useAuthStore } from './stores/auth';
 import { Toast } from 'primevue';
+import MyButton from './components/MyButton.vue';
+
+const authStore = useAuthStore()
 
 </script>
 
@@ -14,11 +17,30 @@ import { Toast } from 'primevue';
       <div class="basis-6/12">
 
        <nav class=" h-1/12 content-center justify-content-center justify-center">
-          <RouterLink class="nav_link " to="/"> Главная </RouterLink>
-          <RouterLink class="nav_link"  to="/about"> О проекте </RouterLink>
-          <RouterLink class="nav_link" to="/profile"> О нас </RouterLink> 
-          <RouterLink class="nav_link" to="/tasks"> Задачи </RouterLink> 
-          <RouterLink class="nav_link" to="/login"> Войти </RouterLink>
+
+      <div class="flex justify-between">
+        <div>
+          <RouterLink class="ui-btn" to="/"> Главная </RouterLink>
+          <RouterLink class="ui-btn" to="/about"> О проекте </RouterLink>
+          <RouterLink class="ui-btn" to="/tasks"> Задачи </RouterLink> 
+        </div>
+
+          <div class="pr-3">
+
+            <div v-if="!authStore.isAuthenticated" >
+            <RouterLink  class="ui-btn" to="/login"> Войти </RouterLink>
+            </div>
+            
+            <div v-else>
+            <RouterLink class="ui-btn" to="/profile">{{ authStore.user?.username }}</RouterLink> 
+            
+            <MyButton v-on:click="()=>authStore.logout()" severity="danger">Выйти</MyButton>
+
+            </div>
+
+          </div>
+        </div>
+          
         </nav>
 
         <div class="m-auto h-11/12 bg-primary-700">
@@ -50,6 +72,17 @@ nav {
   background-color: var(--color-secondary-600);
   color: wheat
 }
+
+.nav_link {
+  padding: 15px;
+  margin: 0px 2px ;
+  border : 5px solid var(--color-secondary-900);
+  background-color: var(--color-secondary-600);
+  color: wheat
+}
+
+
+
 .nav_link:hover {
   padding: 16px;
   background-color: var(--color-secondary-500);

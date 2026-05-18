@@ -70,3 +70,11 @@ class RefreshToken(SQLModel,table=True):
     
     # Обратная связь
     user: User = Relationship(back_populates="refresh_token")
+
+
+
+# Финальная схема ответа при успешном логине
+class TokenResponse(SQLModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: Profile  # 👈 Вот тут мы вкладываем пользователя внутрь ответа

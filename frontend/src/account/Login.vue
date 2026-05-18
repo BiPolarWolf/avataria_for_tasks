@@ -1,6 +1,8 @@
 <script setup>
 import { reactive, ref } from 'vue';
 import api from '@/client';
+import { useAuthStore } from '@/stores/auth';
+
 
 const formData = reactive({
   username: '',
@@ -9,6 +11,7 @@ const formData = reactive({
 
 const isLoading = ref(false);
 const errorMessage = ref('');
+const authStore = useAuthStore()
 
 const login = async () => {
   isLoading.value = true;
@@ -34,8 +37,8 @@ const login = async () => {
     // 3. Получаем ответ с токеном
     const data = response.data;
     
-    // 4. Сохраняем токен (например, в localStorage)
-    localStorage.setItem('access_token', data.access_token);
+    authStore.setToken(data.access_token)
+    authStore.setUser(data.user)
     
     console.log('Успешный вход! Токен:', data.access_token);
     // Здесь обычно делают редирект на защищенную страницу
@@ -75,7 +78,7 @@ const login = async () => {
         />
       </div>
 
-      <button type="submit" :disabled="isLoading">
+      <button type="submit" :disabled="isLoading" class="ui-btn ui-btn--primary">
         {{ isLoading ? 'Вход...' : 'Войти' }}
       </button>
     </form>

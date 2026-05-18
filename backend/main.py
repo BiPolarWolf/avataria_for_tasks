@@ -5,6 +5,7 @@ from exceptions import AuthException
 from database import create_db_and_tables
 from contextlib import asynccontextmanager
 from users.routes import router as users_router
+from users.models import TokenResponse
 from tasks.routes import router as tasks_router
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
@@ -78,8 +79,24 @@ def refresh_token(username: str = Depends(get_username_from_refresh)) -> Token:
         "token_type": "bearer"
     }
 
+
+
+@app.post('/logout')
+def logout(response: Response):
+    # Удаляем куку, перезаписывая её с пустым значением и Max-Age=0
+    response.delete_cookie(
+        key="refresh_token",
+        httponly=True,
+        samesite="lax", # или "strict" / "none" в зависимости от твоего деплоя
+        secure=COOKIE_SECURE     # обязательно для production (HTTPS)
+    )
+    return {"detail": "Успешно вышел из системы"}
+
+
+
+
 @app.post('/token')
-def login_token(response: Response,form_data:Annotated[OAuth2PasswordRequestForm,Depends()],session: SessionDep):
+def login_token(response: Response,form_data:Annotated[OAuth2PasswordRequestForm,Depends()],session: SessionDep) -> TokenResponse:
 
     user : User | None = authenticate_user(session,form_data.username,form_data.password)
 
@@ -101,7 +118,7 @@ def login_token(response: Response,form_data:Annotated[OAuth2PasswordRequestForm
 
     return {
         "access_token": access_token,
-        "refresh_token": refresh_token,
-        "token_type": "bearer"
+        "token_type": "bearer",
+        'user' : user
     }
 
