@@ -40,6 +40,13 @@ class TaskService:
         return task
     
 
+    def get_user_tasks_stats(self,current_user:User) -> Task:
+        
+        stats = self.repo.get_user_tasks_stats(current_user)
+
+        return stats
+    
+
     def complete_task(self,task_id:int,current_user:User) -> Task:
 
         task = self.repo.get_task_by_id(task_id)

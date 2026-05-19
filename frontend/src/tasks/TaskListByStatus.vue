@@ -90,11 +90,13 @@ const update_task = (task:any) => {
                 Изменить  <img src="@/assets/icons/Wrench.png" style="width: 18px;" alt="">
             </MyButton>
             <TaskCompleteConfirmButton
+
               v-if="props.status === 'active'"
               :task-id="task.id"
               :task-description="task.description"
             />
             <TaskDeleteConfirmButton
+
             v-if="props.status === 'active'"
               :task-id="task.id"
               :task-description="task.description"

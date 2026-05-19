@@ -1,7 +1,7 @@
-from sqlmodel import Session, select ,desc
+from sqlmodel import Session, select ,desc ,func
 from .models import Task
 from users.models import User
-from typing import List
+from typing import Dict, List
 
 class TaskRepository:
 
@@ -40,6 +40,19 @@ class TaskRepository:
         return  task
 
 
+    # Предположим, у тебя есть модель Task с полем status
+    def get_user_tasks_stats(self, current_user:User) -> Dict[bool, int]:
+        # Строим запрос: выбираем статус и считаем количество ID задач
+        query = (
+            select(Task.status, func.count(Task.id))
+            .where(Task.author == current_user)
+            .group_by(Task.status)
+        )
+        
+        results = self.db.exec(query).all()
+        
+        # Превращаем результат [( 'completed', 5), ('in_progress', 2)] в красивый словарь
+        return {status: count for status, count in results}
 
     def create_task(self,task:Task) -> Task:
         return self.__create_or_update_task(task)

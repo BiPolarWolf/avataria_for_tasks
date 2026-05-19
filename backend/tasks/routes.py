@@ -27,6 +27,10 @@ def get_completed_tasks(user:current_active_user_dep,session:SessionDep):
     return service.get_tasks(user,'completed')
 
 
+@router.get('/stats')
+def get_tasks_user_stats(user:current_active_user_dep,session:SessionDep):
+    service = TaskService(session)
+    return service.get_user_tasks_stats(user)
 
 
 @router.post("/create")

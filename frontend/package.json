@@ -20,6 +20,7 @@
     "@tailwindcss/vite": "^4.2.4",
     "@tanstack/vue-query": "^5.100.9",
     "axios": "^1.13.6",
+    "chart.js": "^4.5.1",
     "phaser": "^4.1.0",
     "pinia": "^3.0.4",
     "primeicons": "^7.0.0",

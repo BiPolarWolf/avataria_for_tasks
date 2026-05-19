@@ -6,7 +6,7 @@ import router from '@/router'
 
 export const useAuthStore = defineStore('auth', () => {
   // Стейт
-  const token = ref<string | null>(localStorage.getItem('accessToken'))
+  const token = ref<string | null>(localStorage.getItem('access_token'))
 
   const savedUser = localStorage.getItem('user')
   const user = ref<any | null>(savedUser ? JSON.parse(savedUser) : null)
@@ -17,7 +17,7 @@ export const useAuthStore = defineStore('auth', () => {
   // Экшены
   function setToken(newToken: string) {
     token.value = newToken
-    localStorage.setItem('accessToken', newToken)
+    localStorage.setItem('access_token', newToken)
   }
 
   function setUser(userData: any) {
@@ -39,6 +39,7 @@ export const useAuthStore = defineStore('auth', () => {
         token.value = null
         user.value = null
         localStorage.removeItem('access_token')
+        localStorage.removeItem('user')
         
         // 3. Кидаем юзера на страницу входа
         router.push('/login')
