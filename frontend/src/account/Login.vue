@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue';
 import api from '@/client';
 import { useAuthStore } from '@/stores/auth';
-
+import router from '@/router';
 
 const formData = reactive({
   username: '',
@@ -43,6 +43,8 @@ const login = async () => {
     console.log('Успешный вход! Токен:', data.access_token);
     // Здесь обычно делают редирект на защищенную страницу
     // router.push('/dashboard');
+
+    router.push({name:'profile'})
 
   } catch (error) {
     console.error(error);

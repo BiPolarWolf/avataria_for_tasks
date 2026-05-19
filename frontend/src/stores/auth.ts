@@ -6,8 +6,10 @@ import router from '@/router'
 
 export const useAuthStore = defineStore('auth', () => {
   // Стейт
-  const user = ref<any | null>(null)
   const token = ref<string | null>(localStorage.getItem('accessToken'))
+
+  const savedUser = localStorage.getItem('user')
+  const user = ref<any | null>(savedUser ? JSON.parse(savedUser) : null)
 
   // Геттеры
   const isAuthenticated = computed(() => !!token.value)
@@ -20,6 +22,10 @@ export const useAuthStore = defineStore('auth', () => {
 
   function setUser(userData: any) {
     user.value = userData
+
+    // Превращаем объект в JSON-строку перед сохранением
+    localStorage.setItem('user', JSON.stringify(userData))
+
   }
 
    async function logout() {
@@ -38,7 +44,6 @@ export const useAuthStore = defineStore('auth', () => {
         router.push('/login')
     }
     }
-
   return {
     user,
     token,
@@ -46,5 +51,5 @@ export const useAuthStore = defineStore('auth', () => {
     setToken,
     setUser,
     logout
-  }
-})
+  }}
+)
