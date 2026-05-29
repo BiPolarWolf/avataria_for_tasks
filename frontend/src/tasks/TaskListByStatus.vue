@@ -59,7 +59,7 @@ const update_task = (task:any) => {
 
 
 <template>
-
+  
     <TaskUpdateDialog v-model:visible="visible" v-model:initial="selected_task" />
 
     <template v-if="isPending">
@@ -84,23 +84,28 @@ const update_task = (task:any) => {
         <template #buttons> <span></span></template>
 
         <template #actions>
+          <template v-if="props.status === 'active'">
+
             <MyButton
-            v-if="props.status === 'active'"
             size="small" severity="info" v-on:click="() =>update_task(task)"  class="detail_button">
                 Изменить  <img src="@/assets/icons/Wrench.png" style="width: 18px;" alt="">
             </MyButton>
-            <TaskCompleteConfirmButton
 
-              v-if="props.status === 'active'"
+            <TaskCompleteConfirmButton
               :task-id="task.id"
               :task-description="task.description"
             />
             <DeleteConfirmButton
-              v-if="props.status === 'active'"
               :object_id="task.id"
               :description="task.description"
               :query-key="'tasks'"
             />
+          </template>
+          <template v-else>
+            <span>Завершено</span>
+          </template>
+
+
         </template>
 
     </MyCard>
