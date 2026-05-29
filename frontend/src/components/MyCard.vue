@@ -13,7 +13,16 @@ const show = () => {
 
 <template>
     <Card class="custom-card">
-        <template #content>
+
+
+        <template #subtitle>
+            <slot name="subtitle">
+                
+            </slot>
+        </template>
+
+
+                <template #content>
             <template class="flex w-full">
 
                 <div class="flex-1">
@@ -32,12 +41,6 @@ const show = () => {
             </template>
 
  
-        </template>
-
-        <template #subtitle>
-            <slot name="subtitle">
-                
-            </slot>
         </template>
 
         <template #footer>

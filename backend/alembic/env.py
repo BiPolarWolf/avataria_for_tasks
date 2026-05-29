@@ -22,6 +22,9 @@ from sqlmodel import SQLModel
 # Замени 'models' на точное имя файла/модуля, где написан class Task(SQLModel, table=True)
 # Если файл называется database.py, то: from database import Task
 from tasks.models import Task
+from tags.models import NoteTagLink, Tag
+from notes.models import Note
+from users.models import RefreshToken, User
 # =========================
 
 

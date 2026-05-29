@@ -12,6 +12,12 @@ const routes = [
     path: '/about',
     component: About
   },
+    {
+    path: '/notes',
+    name: 'notes',
+    // Ленивая загрузка (компонент подгрузится только при переходе)
+    component: () => import('../notes/NotesTabs.vue')
+  },
   {
     path: '/tasks',
     name: 'tasks',

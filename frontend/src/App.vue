@@ -21,10 +21,11 @@ const authStore = useAuthStore()
       <div class="nav_row">
         <div class="nav_group">
           <RouterLink class="ui-btn" to="/"> Главная </RouterLink>
-          <RouterLink class="ui-btn" to="/about"> О проекте </RouterLink>
-          <RouterLink class="ui-btn" to="/tasks"> Задачи </RouterLink> 
+          <RouterLink class="ui-btn" to="/notes"><i class="pi pi-book"></i> Записи </RouterLink>
+          <RouterLink class="ui-btn" to="/tasks"><i class="pi pi-check-square"></i> Задачи </RouterLink> 
         </div>
 
+        
           <div class="nav_group nav_group--right">
 
             <div v-if="!authStore.isAuthenticated" >

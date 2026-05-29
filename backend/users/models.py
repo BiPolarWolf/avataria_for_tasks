@@ -6,6 +6,8 @@ from typing import List , TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from tasks.models import Task
+    from tags.models import Tag
+    from notes.models import Note
 
 # Общие поля
 class UserBase(SQLModel):
@@ -33,6 +35,8 @@ class User(UserBase, table=True):
     is_verified : bool = Field(default=False)
 
     tasks : List['Task'] = Relationship(back_populates='author')
+    tags: List['Tag'] = Relationship(back_populates='author')
+    notes: List['Note'] = Relationship(back_populates='author')
 
     refresh_token: Optional["RefreshToken"] = Relationship(
         back_populates="user",

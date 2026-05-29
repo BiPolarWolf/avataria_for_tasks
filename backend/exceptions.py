@@ -34,3 +34,28 @@ class TaskIncorrectAuthorError(ServiceError):
 class  TaskCompletedAlreadyError(ServiceError):
     """Задача уже выполнена"""
     pass
+
+
+class TagNotFoundError(ServiceError):
+    """Tag не найден в базе"""
+    pass
+
+
+class TagIncorrectAuthorError(ServiceError):
+    """Юзер не является автором Tag"""
+    pass
+
+
+class TagAttachedToNotesError(ServiceError):
+    """Tag нельзя удалить, пока он привязан к запискам"""
+    pass
+
+
+class NoteNotFoundError(ServiceError):
+    """Note не найден в базе"""
+    pass
+
+
+class NoteIncorrectAuthorError(ServiceError):
+    """Юзер не является автором Note"""
+    pass

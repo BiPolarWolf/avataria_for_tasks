@@ -7,6 +7,8 @@ from contextlib import asynccontextmanager
 from users.routes import router as users_router
 from users.models import TokenResponse
 from tasks.routes import router as tasks_router
+from tags.routes import router as tags_router
+from notes.routes import router as notes_router
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
 from users.security import  Token , authenticate_user , create_access_token, create_refresh_token , save_refresh_token_to_db, get_username_from_refresh
@@ -43,6 +45,8 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(users_router)
 app.include_router(tasks_router)
+app.include_router(tags_router)
+app.include_router(notes_router)
 
 
 # Настройка CORS
@@ -121,4 +125,3 @@ def login_token(response: Response,form_data:Annotated[OAuth2PasswordRequestForm
         "token_type": "bearer",
         'user' : user
     }
-

@@ -16,6 +16,11 @@ engine = create_engine(sqlite_url, connect_args=connect_args)
 
 
 def create_db_and_tables():
+    import notes.models  # noqa: F401
+    import tags.models  # noqa: F401
+    import tasks.models  # noqa: F401
+    import users.models  # noqa: F401
+
     SQLModel.metadata.create_all(engine)
 
 
