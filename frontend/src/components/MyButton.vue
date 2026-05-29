@@ -7,7 +7,7 @@ defineOptions({
 </script>
 
 <template>
-  <Button v-bind="$attrs" class="ui-btn ">
+  <Button v-bind="$attrs" class="ui-btn mx-0.5 ">
     <slot></slot>
   </Button>
 </template>

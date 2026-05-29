@@ -7,9 +7,11 @@ import MyButton from '@/components/MyButton.vue'
 import MyDialog from '@/components/MyDialog.vue'
 import api from '@/client'
 
+
 interface Props {
-  taskId: number
-  taskDescription?: string
+    description?: string
+    queryKey : string
+    object_id : number
 }
 
 const props = defineProps<Props>()
@@ -18,30 +20,30 @@ const visible = ref(false)
 const toast = useToast()
 const queryClient = useQueryClient()
 
-const deleteTask = async () => {
-  const response = await api.delete(`/tasks/${props.taskId}`)
+const deleteFunc = async () => {
+  const response = await api.delete(`/${props.queryKey}/${props.object_id}`)
 
   return response.data
 }
 
 const { mutate, isPending } = useMutation({
-  mutationFn: deleteTask,
+  mutationFn: deleteFunc,
   onSuccess: async () => {
     visible.value = false
-    await queryClient.invalidateQueries({ queryKey: ['tasks'] })
+    await queryClient.invalidateQueries({ queryKey: [props.queryKey] })
     toast.add({
       severity: 'success',
-      summary: 'Задача удалена',
-      detail: 'Она больше не отображается в списке задач',
+      summary: `Объект удален`,
+      detail: `Он больше не отображается в списке `,
       life: 3000
     })
   },
   onError: (error: unknown) => {
     const detail = axios.isAxiosError(error)
-      ? error.response?.data?.detail ?? 'Не удалось удалить задачу'
+      ? error.response?.data?.detail ?? 'Не удалось удалить объект'
       : error instanceof Error
         ? error.message
-        : 'Не удалось удалить задачу'
+        : 'Не удалось удалить объект'
 
     toast.add({
       severity: 'error',
@@ -69,8 +71,8 @@ const confirmDelete = () => {
     :style="{ width: '28rem' }"
   >
     <div class="confirm_content">
-      <p class="confirm_text">Удалить задачу без возможности восстановления?</p>
-      <p v-if="taskDescription" class="task_preview">{{ taskDescription }}</p>
+      <p class="confirm_text">Удалить без возможности восстановления?</p>
+      <p v-if="description" class="object_preview">{{ description }}</p>
     </div>
 
     <template #footer>
@@ -96,7 +98,7 @@ const confirmDelete = () => {
   margin: 0;
 }
 
-.task_preview {
+.object_preview {
   margin: 0;
   padding: 0.75rem;
   border: 2px solid var(--color-paper-700);

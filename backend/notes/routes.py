@@ -46,7 +46,7 @@ def create_note(note_data: NoteCreate, user: current_active_user_dep, session: S
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Ошибка сервера")
 
 
-@router.post("/{note_id}/update")
+@router.post("/{note_id}")
 def update_note(note_id: int, note_data: NoteUpdate, user: current_active_user_dep, session: SessionDep):
     service = NoteService(session)
 
@@ -62,7 +62,7 @@ def update_note(note_id: int, note_data: NoteUpdate, user: current_active_user_d
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Ошибка сервера")
 
 
-@router.delete("/{note_id}/delete")
+@router.delete("/{note_id}")
 def delete_note(note_id: int, user: current_active_user_dep, session: SessionDep):
     service = NoteService(session)
 

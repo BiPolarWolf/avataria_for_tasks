@@ -7,6 +7,7 @@ import { ProgressSpinner} from 'primevue'
 import { ref } from 'vue'
 
 import api from '@/client'
+import DeleteConfirmButton from '@/components/DeleteConfirmButton.vue'
 
 
 
@@ -71,9 +72,16 @@ const update_note = (task:any) => {
         </template>
 
 
-        <template #buttons> <span></span></template>
+        <template #buttons>
+          <span></span>
+        </template>
 
-        <template #footer>
+        <template #actions>
+          <DeleteConfirmButton
+            :object_id="note.id"
+            query-key="notes"
+            :description="note.text"
+          />
         </template>
 
     </MyCard>

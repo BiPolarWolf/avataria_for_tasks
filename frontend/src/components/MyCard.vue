@@ -22,31 +22,19 @@ const show = () => {
         </template>
 
 
-                <template #content>
-            <template class="flex w-full">
-
-                <div class="flex-1">
-                <slot name="content"></slot>
-
-                </div>
-                <div class="flex-none content-end">
-                    <slot name="buttons">
-                        <MyButton v-on:click="show" size="small" severity="info">
-                            <i class="pi pi-info"></i>
-                        </MyButton>
-                    </slot>
-                </div>
-
-
-            </template>
-
- 
+        <template #content>
+            <slot name="content"></slot>
         </template>
 
         <template #footer>
-            <slot name="footer">
-                
+
+            <div class="actions">
+            <slot name="actions" class="actions">
+                <MyButton v-on:click="show" size="small" severity="info">
+                            <i class="pi pi-info"></i>
+                </MyButton>
             </slot>
+            </div>
         </template>
 
     </Card>
@@ -61,6 +49,12 @@ const show = () => {
     background-color: #f6d6bd;
     border: 2.5px solid #927878;
     color : #826373;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 

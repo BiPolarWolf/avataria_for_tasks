@@ -9,6 +9,7 @@ import TaskUpdateDialog from './TaskUpdateDialog.vue'
 import TaskCompleteConfirmButton from './TaskCompleteConfirmButton.vue'
 import TaskDeleteConfirmButton from './TaskDeleteConfirmButton.vue'
 import api from '@/client'
+import DeleteConfirmButton from '@/components/DeleteConfirmButton.vue'
 
 
 
@@ -82,8 +83,7 @@ const update_task = (task:any) => {
 
         <template #buttons> <span></span></template>
 
-        <template #footer>
-          <div class="task_actions">
+        <template #actions>
             <MyButton
             v-if="props.status === 'active'"
             size="small" severity="info" v-on:click="() =>update_task(task)"  class="detail_button">
@@ -95,13 +95,12 @@ const update_task = (task:any) => {
               :task-id="task.id"
               :task-description="task.description"
             />
-            <TaskDeleteConfirmButton
-
-            v-if="props.status === 'active'"
-              :task-id="task.id"
-              :task-description="task.description"
+            <DeleteConfirmButton
+              v-if="props.status === 'active'"
+              :object_id="task.id"
+              :description="task.description"
+              :query-key="'tasks'"
             />
-          </div>
         </template>
 
     </MyCard>
@@ -116,11 +115,6 @@ const update_task = (task:any) => {
   color: white;
 }
 
-.task_actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
 
 .task_description {
   white-space: pre-wrap;
