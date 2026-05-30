@@ -52,6 +52,7 @@ class NoteCreate(SQLModel):
 
 
 class NoteUpdate(SQLModel):
+    id : int
     title: str | None = Field(default=None, max_length=100)
     text: str | None = Field(default=None, max_length=1000)
     tag_ids: list[int] | None = None

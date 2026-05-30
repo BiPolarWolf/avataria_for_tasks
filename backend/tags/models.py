@@ -40,6 +40,7 @@ class TagCreate(SQLModel):
 
 
 class TagUpdate(SQLModel):
+    id: int
     text: str | None = Field(default=None, max_length=100)
     color: str | None = Field(default=None, max_length=7, regex=r"^#[0-9A-Fa-f]{6}$")
     icon: str | None = Field(default=None, max_length=255)

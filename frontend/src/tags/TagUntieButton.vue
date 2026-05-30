@@ -2,17 +2,15 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { useToast } from 'primevue'
+import { useToast } from 'primevue/usetoast'
+
+import api from '@/client'
 import MyButton from '@/components/MyButton.vue'
 import MyDialog from '@/components/MyDialog.vue'
-import api from '@/client'
-
 
 interface Props {
-    description?: string
-    queryKey : string
-    object_id : number
-    size?: string
+  tagId: number
+  tagText?: string
 }
 
 const props = defineProps<Props>()
@@ -21,59 +19,64 @@ const visible = ref(false)
 const toast = useToast()
 const queryClient = useQueryClient()
 
-const deleteFunc = async () => {
-  const response = await api.delete(`/${props.queryKey}/${props.object_id}`)
-
+const untieTag = async () => {
+  const response = await api.post(`/tags/${props.tagId}/untie`)
   return response.data
 }
 
 const { mutate, isPending } = useMutation({
-  mutationFn: deleteFunc,
+  mutationFn: untieTag,
   onSuccess: async () => {
     visible.value = false
-    await queryClient.invalidateQueries({ queryKey: [props.queryKey] })
+
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['tags'] }),
+      queryClient.invalidateQueries({ queryKey: ['notes'] }),
+    ])
+
     toast.add({
       severity: 'success',
-      summary: `Объект удален`,
-      detail: `Он больше не отображается в списке `,
-      life: 3000
+      summary: 'Тег отвязан',
+      detail: 'Записи обновятся без этого тега',
+      life: 3000,
     })
   },
   onError: (error: unknown) => {
     const detail = axios.isAxiosError(error)
-      ? error.response?.data?.detail ?? 'Не удалось удалить объект'
+      ? error.response?.data?.detail ?? 'Не удалось отвязать тег'
       : error instanceof Error
         ? error.message
-        : 'Не удалось удалить объект'
+        : 'Не удалось отвязать тег'
 
     toast.add({
       severity: 'error',
       summary: 'Ошибка',
       detail,
-      life: 3000
+      life: 3000,
     })
-  }
+  },
 })
 
-const confirmDelete = () => {
+const confirmUntie = () => {
   mutate()
 }
 </script>
 
 <template>
-  <MyButton :size="size" severity="danger" @click="visible = true">
-    Удалить <img src="@/assets/icons/Trashbin.png" width="18" alt="">
+  <MyButton type="button" severity="warning" :disabled="isPending || !tagId" @click="visible = true">
+    Отвязать
   </MyButton>
 
   <MyDialog
     v-model:visible="visible"
     modal
-    header="Подтвердите удаление"
-    :style="{ width: '28rem' }"
+    header="Отвязать тег"
+    :style="{ width: '30rem' }"
   >
     <div class="confirm_content">
-      <p class="confirm_text">Удалить без возможности восстановления?</p>
-      <p v-if="description" class="object_preview">{{ description }}</p>
+      <p class="confirm_text">Отвязать этот тег от всех записей?</p>
+      <p v-if="tagText" class="object_preview">{{ tagText }}</p>
+      <p class="hint_text">Сам тег не удалится, но исчезнет из уже привязанных записей.</p>
     </div>
 
     <template #footer>
@@ -81,8 +84,8 @@ const confirmDelete = () => {
         <MyButton severity="secondary" :disabled="isPending" @click="visible = false">
           Отмена
         </MyButton>
-        <MyButton severity="danger" :disabled="isPending" @click="confirmDelete">
-          {{ isPending ? 'Удаляем...' : 'Удалить' }}
+        <MyButton severity="warning" :disabled="isPending" @click="confirmUntie">
+          {{ isPending ? 'Отвязываем...' : 'Отвязать' }}
         </MyButton>
       </div>
     </template>
@@ -95,8 +98,14 @@ const confirmDelete = () => {
   gap: 0.75rem;
 }
 
-.confirm_text {
+.confirm_text,
+.hint_text {
   margin: 0;
+}
+
+.hint_text {
+  color: var(--color-secondary-800);
+  font-size: 0.9rem;
 }
 
 .object_preview {
@@ -104,7 +113,6 @@ const confirmDelete = () => {
   padding: 0.75rem;
   border: 2px solid var(--color-paper-700);
   background: rgba(252, 248, 243, 0.55);
-  white-space: pre-wrap;
 }
 
 .confirm_actions {

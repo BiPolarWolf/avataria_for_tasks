@@ -2,7 +2,7 @@
 import MyCard from '@/components/MyCard.vue'
 import { formatShortDate } from '@/utils/general'
 import { ref } from 'vue'
-import Tag from '@/components/Tag.vue'
+import Tag from '@/tags/Tag.vue'
 import ApiContainer from '@/components/ApiContainer.vue'
 import DeleteConfirmButton from '@/components/DeleteConfirmButton.vue'
 

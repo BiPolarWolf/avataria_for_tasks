@@ -23,7 +23,7 @@ const routes = [
     path: '/tags',
     name: 'tags',
     // Ленивая загрузка (компонент подгрузится только при переходе)
-    component: () => import('../tags/TagsList.vue')
+    component: () => import('../tags/TagsTabs.vue')
   },
   {
     path: '/tasks',

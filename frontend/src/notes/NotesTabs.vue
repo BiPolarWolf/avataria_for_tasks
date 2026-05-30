@@ -6,8 +6,6 @@ import NoteList from './NoteList.vue';
 const tabs = [
   {value : 'create_form', title : 'Создать запись'},
   {value : 'notes', title : 'Мои записи'},
-
-
 ]
 </script>
 

@@ -45,12 +45,12 @@ def create_tag(tag_data: TagCreate, user: current_active_user_dep, session: Sess
     return service.create_tag(tag_data, user)
 
 
-@router.post("/{tag_id}/update")
-def update_tag(tag_id: int, tag_data: TagUpdate, user: current_active_user_dep, session: SessionDep):
+@router.post("/update")
+def update_tag( tag_data: TagUpdate, user: current_active_user_dep, session: SessionDep):
     service = TagService(session)
 
     try:
-        return service.update_tag(tag_id, tag_data, user)
+        return service.update_tag(tag_data, user)
     except TagNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except TagIncorrectAuthorError as e:
@@ -73,7 +73,7 @@ def untie_tag(tag_id: int, user: current_active_user_dep, session: SessionDep):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Ошибка сервера")
 
 
-@router.delete("/{tag_id}/delete")
+@router.delete("/{tag_id}")
 def delete_tag(tag_id: int, user: current_active_user_dep, session: SessionDep):
     service = TagService(session)
 

@@ -94,10 +94,14 @@ function submit(){
     <hr>
 
     <div class="form_buttons">
-        <slot name="buttons" :isPendind="isPending">
-            <MyButton type="submit" :disabled="isPending" severity="success">
-                {{ isPending ? 'Сохраняется...' : 'Сохранить' }} <img src="@/assets/icons/FloppyDisk.png" width="18px" alt="">
-            </MyButton>
+
+        <MyButton type="submit" :disabled="isPending" severity="success">
+          {{ isPending ? 'Сохраняется...' : 'Сохранить' }} <img src="@/assets/icons/FloppyDisk.png" width="18px" alt="">
+        </MyButton>
+
+
+        <slot name="other_buttons">
+
         </slot>
     </div>
 

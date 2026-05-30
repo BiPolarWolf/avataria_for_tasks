@@ -45,8 +45,8 @@ class NoteService:
 
         return self.repo.create_note(db_note)
 
-    def update_note(self, note_id: int, note_data: NoteUpdate, current_user: User) -> Note:
-        note = self.get_note(note_id, current_user)
+    def update_note(self, note_data: NoteUpdate, current_user: User) -> Note:
+        note = self.get_note(note_data.id, current_user)
         note_update = note_data.model_dump(exclude_unset=True)
 
         if "tag_ids" in note_update:
