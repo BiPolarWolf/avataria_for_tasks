@@ -43,3 +43,11 @@ class TagUpdate(SQLModel):
     text: str | None = Field(default=None, max_length=100)
     color: str | None = Field(default=None, max_length=7, regex=r"^#[0-9A-Fa-f]{6}$")
     icon: str | None = Field(default=None, max_length=255)
+
+
+class TagRead(SQLModel):
+    id: int
+    author_id: int
+    text: str
+    color: str
+    icon: str | None = None

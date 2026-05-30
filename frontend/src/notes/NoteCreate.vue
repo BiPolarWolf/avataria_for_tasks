@@ -4,19 +4,23 @@ import MyForm from '@/components/MyForm.vue'
 import MyTextArea from '@/components/inputs/MyTextArea.vue';
 import MyRatingInput from '@/components/inputs/MyRatingInput.vue';
 import MyTextInput from '@/components/inputs/MyTextInput.vue';
+import MySelect from '@/components/inputs/MySelect.vue';
 
 const data = ref({
     title : '',
     text : '',
-    importans : 1
+    importans : 1,
+    tag_ids : []
 })
 
+const tagsApiUrl = 'tags/'
 
 const success_function = () =>{
     data.value = {
     title : '',
     text : '',
-    importans : 1
+    importans : 1,
+    tag_ids : []
     }
 }
 
@@ -42,6 +46,11 @@ const success_function = () =>{
     ></MyTextArea>
 
     <MyRatingInput v-model="data.importans" :max="10" label="Важность"></MyRatingInput>
+
+    <MySelect 
+    option-label="text"
+    option-value="id"
+    v-model="data.tag_ids" multiple :api-url="tagsApiUrl" label="Теги"></MySelect>
 
     <!-- {{ data }} -->
 

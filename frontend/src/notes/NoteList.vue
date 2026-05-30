@@ -65,6 +65,13 @@ const update_note = (task:any) => {
         <p class="task_description">{{ note.text }}</p>
         <br>
         <p >Важность:  <img class="w-6 inline" v-for="value in note.importans"  src="@/assets/icons/CatHead.png" alt="()"></p>
+        <p class="mt-3" v-if="note.tags.length">
+          Теги: 
+          <span 
+          v-for="tag in note.tags" 
+          :style="{ backgroundColor: tag.color }" 
+          class="tag">{{ tag.text }}</span>
+        </p>
         </template>
 
         <template #subtitle> 
@@ -111,6 +118,15 @@ xw
   border: 3px solid var(--color-secondary-700);
   background: rgba(241, 226, 204, 0.92);
   color: var(--color-secondary-900);
+}
+
+.tag {
+  background: var(--color-secondary-100);
+  border: 1px solid var(--color-secondary-300);
+  border-radius: 1rem;
+  padding: 0.25rem 0.5rem;
+  margin-right: 0.5rem;
+  font-size: 0.875rem;
 }
 
 </style>

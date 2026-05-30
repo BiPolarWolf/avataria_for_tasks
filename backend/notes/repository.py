@@ -1,5 +1,6 @@
 from typing import List
 
+from sqlalchemy.orm import selectinload
 from sqlmodel import Session, desc, select
 
 from tags.models import Tag
@@ -13,12 +14,13 @@ class NoteRepository:
         self.db = db
 
     def get_note_by_id(self, note_id: int) -> Note | None:
-        query = select(Note).where(Note.id == note_id)
+        query = select(Note).options(selectinload(Note.tags)).where(Note.id == note_id)
         return self.db.exec(query).first()
 
     def get_notes_all(self, current_user: User) -> List[Note]:
         query = (
             select(Note)
+            .options(selectinload(Note.tags))
             .where(Note.author_id == current_user.id)
             .order_by(desc(Note.date_update))
         )

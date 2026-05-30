@@ -4,7 +4,7 @@ from database import SessionDep
 from exceptions import NoteIncorrectAuthorError, NoteNotFoundError, ServiceError, TagNotFoundError
 from users.security import current_active_user_dep
 
-from .models import NoteCreate, NoteUpdate
+from .models import NoteCreate, NoteRead, NoteUpdate
 from .service import NoteService
 
 
@@ -14,13 +14,13 @@ router = APIRouter(
 )
 
 
-@router.get("/")
+@router.get("/", response_model=list[NoteRead])
 def get_notes(user: current_active_user_dep, session: SessionDep):
     service = NoteService(session)
     return service.get_notes(user)
 
 
-@router.get("/{note_id}")
+@router.get("/{note_id}", response_model=NoteRead)
 def get_note(note_id: int, user: current_active_user_dep, session: SessionDep):
     service = NoteService(session)
 
@@ -34,7 +34,7 @@ def get_note(note_id: int, user: current_active_user_dep, session: SessionDep):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Ошибка сервера")
 
 
-@router.post("/create")
+@router.post("/create", response_model=NoteRead)
 def create_note(note_data: NoteCreate, user: current_active_user_dep, session: SessionDep):
     service = NoteService(session)
 
@@ -46,7 +46,7 @@ def create_note(note_data: NoteCreate, user: current_active_user_dep, session: S
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Ошибка сервера")
 
 
-@router.post("/{note_id}")
+@router.post("/{note_id}", response_model=NoteRead)
 def update_note(note_id: int, note_data: NoteUpdate, user: current_active_user_dep, session: SessionDep):
     service = NoteService(session)
 

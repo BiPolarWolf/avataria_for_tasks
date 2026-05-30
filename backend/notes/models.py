@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, List
 from sqlalchemy import Column, JSON
 from sqlmodel import Field, Relationship, SQLModel
 
-from tags.models import NoteTagLink
+from tags.models import NoteTagLink, TagRead
 from users.models import User
 
 
@@ -58,3 +58,16 @@ class NoteUpdate(SQLModel):
     importans: int | None = Field(default=None, ge=1, le=10)
     theme: str | None = Field(default=None, max_length=100)
     embedding: list[float] | None = None
+
+
+class NoteRead(SQLModel):
+    id: int
+    title: str
+    author_id: int
+    text: str
+    date_create: datetime
+    date_update: datetime
+    importans: int
+    theme: str
+    embedding: list[float] | None = None
+    tags: list[TagRead] = []
