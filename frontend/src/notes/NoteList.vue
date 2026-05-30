@@ -68,9 +68,9 @@ const update_note = (task:any) => {
         </template>
 
         <template #subtitle> 
-         {{ note.title}}    {{ formatShortDate(note.date_create) }}, {{ formatShortDate(note.date_update) }}
+         <span class="font-bold">{{ note.title}}</span> {{ formatShortDate(note.date_update) }}
         </template>
-
+xw
 
         <template #buttons>
           <span></span>

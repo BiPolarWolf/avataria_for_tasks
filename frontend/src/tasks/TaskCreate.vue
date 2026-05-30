@@ -30,7 +30,9 @@ const success_function = () =>{
     
     >
 
-    <MyTextArea v-model="data.description" label="Описание" placeholder="Например: пройти ежедневные задания и собрать награды"></MyTextArea>
+    <MyTextArea
+    :is_restricted="true"
+    v-model="data.description" label="Описание" placeholder="Например: пройти ежедневные задания и собрать награды"></MyTextArea>
 
     <MyRatingInput v-model="data.complexity" label="Сложность"></MyRatingInput>
 

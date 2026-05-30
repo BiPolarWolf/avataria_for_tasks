@@ -1,5 +1,6 @@
 <script lang='ts' setup>
 import Textarea from 'primevue/textarea';
+import { watch } from 'vue';
 
 interface Props {
   modelValue: string;
@@ -8,22 +9,47 @@ interface Props {
   error?: string;
   rows?: number;
   autoResize?: boolean;
+  is_restricted?: boolean;
+  symbol_restriction?: number;
 }
 
 // Устанавливаем дефолтные значения для рядов
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   rows: 3,
-  autoResize: true
+  autoResize: true,
+  is_restricted: false,
+  symbol_restriction: 1000,
 });
 
-defineEmits(['update:modelValue']);
+// Убедись, что emit предварительно объявлен (если это <script setup>)
+// const emit = defineEmits(['update:modelValue']);
+
+const emit = defineEmits(['update:modelValue']);
+
+watch(
+  () => props.modelValue, 
+  (value) => {
+    // Добавлена проверка на наличие value, чтобы не получить ошибку, если придет null или undefined
+    if (props.is_restricted && value && value.length > props.symbol_restriction) {
+      emit('update:modelValue', value.slice(0, props.symbol_restriction));
+    }
+  }
+)
+
+
 </script>
 
 <template>
   <div class="field-container font-pixel">
+
     <!-- Label -->
-    <label v-if="label" class="pixel-label">{{ label }}</label>
-    
+    <label v-if="label" class="pixel-label">
+    {{ label }}
+      <span v-if="is_restricted">
+        {{ modelValue.length }} / {{ symbol_restriction }} 
+      </span>
+    </label>
+
     <div class="input-wrapper">
       <Textarea
         :value="modelValue"

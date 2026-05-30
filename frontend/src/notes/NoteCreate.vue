@@ -34,7 +34,12 @@ const success_function = () =>{
 
     <MyTextInput v-model="data.title" label="Заголовок" ></MyTextInput>
 
-    <MyTextArea v-model="data.text" label="Описание" placeholder="Например: как прошел мой день"></MyTextArea>
+    <MyTextArea 
+        :is_restricted="true" 
+        v-model="data.text" 
+        label="Описание" 
+        placeholder="Например: как прошел мой день"
+    ></MyTextArea>
 
     <MyRatingInput v-model="data.importans" :max="10" label="Важность"></MyRatingInput>
 
