@@ -1,41 +1,10 @@
 <script setup lang="ts">
-import { useQuery} from '@tanstack/vue-query'
 import MyCard from '@/components/MyCard.vue'
-import MyButton from '@/components/MyButton.vue'
 import { formatShortDate } from '@/utils/general'
-import { ProgressSpinner} from 'primevue'
 import { ref } from 'vue'
-
-import api from '@/client'
+import Tag from '@/components/Tag.vue'
+import ApiContainer from '@/components/ApiContainer.vue'
 import DeleteConfirmButton from '@/components/DeleteConfirmButton.vue'
-
-
-
-const getErrorMessage = () => {
-  const queryError = error.value as {
-    response?: {
-      data?: {
-        detail?: string
-      }
-    }
-  } | null
-
-  return queryError?.response?.data?.detail ?? 'Не удалось загрузить записи'
-}
-
-
-// Функция запроса (теперь она отделена от жизненного цикла компонента)
-const fetchNotes = async () => {
-  const response = await api.get(`/notes/`)
-  return response.data
-}
-
-// Основной хук Vue Query
-const {isPending, isFetching, isError, data, error } = useQuery({
-  queryKey: ['notes'], // Разделяем кэш по статусу задач
-  queryFn: fetchNotes, // Сама функция запроса
-  retry: 1,            // Количество попыток при ошибке
-})
 
 const selected_task = ref(null)
 const visible = ref(false)
@@ -45,21 +14,13 @@ const update_note = (task:any) => {
   selected_task.value = task
 };
 
-
 </script>
 
 
-
 <template>
-
-    <template v-if="isPending">
-       <ProgressSpinner />
-    </template>
-    <div v-else-if="isError" class="task_error">
-      {{ getErrorMessage() }}
-    </div>
-
-    <MyCard v-else class="my-3" v-for="note in data">
+  <ApiContainer apiUrl="/notes/"  :queryKeys="['notes']">
+    <template v-slot:default="{ data }">
+      <MyCard class="my-3" v-for="note in data">
 
         <template #content>
         <p class="task_description">{{ note.text }}</p>
@@ -67,10 +28,12 @@ const update_note = (task:any) => {
         <p >Важность:  <img class="w-6 inline" v-for="value in note.importans"  src="@/assets/icons/CatHead.png" alt="()"></p>
         <p class="mt-3" v-if="note.tags.length">
           Теги: 
-          <span 
+          <template
           v-for="tag in note.tags" 
-          :style="{ backgroundColor: tag.color }" 
-          class="tag">{{ tag.text }}</span>
+          :key="tag.id"
+          >
+          <Tag :tag="tag" />
+        </template>
         </p>
         </template>
 
@@ -92,6 +55,8 @@ xw
         </template>
 
     </MyCard>
+    </template>
+  </ApiContainer>
 
 </template>
 
@@ -111,22 +76,6 @@ xw
 
 .task_description {
   white-space: pre-wrap;
-}
-
-.task_error {
-  padding: 1rem;
-  border: 3px solid var(--color-secondary-700);
-  background: rgba(241, 226, 204, 0.92);
-  color: var(--color-secondary-900);
-}
-
-.tag {
-  background: var(--color-secondary-100);
-  border: 1px solid var(--color-secondary-300);
-  border-radius: 1rem;
-  padding: 0.25rem 0.5rem;
-  margin-right: 0.5rem;
-  font-size: 0.875rem;
 }
 
 </style>

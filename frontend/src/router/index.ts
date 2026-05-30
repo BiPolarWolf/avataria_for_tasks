@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/Home.vue'
 import About from '@/About.vue'
 
+
 const routes = [
     {
     path: '/',
@@ -17,6 +18,12 @@ const routes = [
     name: 'notes',
     // Ленивая загрузка (компонент подгрузится только при переходе)
     component: () => import('../notes/NotesTabs.vue')
+  },
+  {
+    path: '/tags',
+    name: 'tags',
+    // Ленивая загрузка (компонент подгрузится только при переходе)
+    component: () => import('../tags/TagsList.vue')
   },
   {
     path: '/tasks',
