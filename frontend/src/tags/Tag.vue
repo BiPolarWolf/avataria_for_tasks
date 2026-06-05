@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { computed } from 'vue';
-import TagUpdateDialog from './TagUpdateDialog.vue';
+
 
 interface Tag {
 id: number
@@ -54,6 +54,6 @@ const tagStyles = computed(() => {
     border: 2px solid; /* Цвет задается через inline-стили */
     font-size: 14px;
     font-weight: 500;
-    margin-right: 0.5rem;
+    margin: 0.3rem;
 }
 </style>
