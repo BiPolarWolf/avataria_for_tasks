@@ -20,10 +20,6 @@ from fastapi import Response
 COOKIE_SECURE = os.getenv("COOKIE_SECURE", "false").lower() == "true"
 
 
-origins = [
-    "http://localhost:5174",  # Твой адрес фронтенда на Vite
-    "http://127.0.0.1:5174",
-]
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
@@ -42,6 +38,25 @@ async def lifespan(app:FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080", # стандартный порт Vue dev-сервера
+    "http://localhost:5173", # порт Vite
+    "http://your-server-ip",  # IP твоего будущего сервера
+    "https://your-domain.com" # Твой домен (если будет)
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins, # Разрешаем запросы с этих адресов
+    allow_credentials=True,
+    allow_methods=["*"], # Разрешаем все методы (GET, POST, PUT, DELETE и т.д.)
+    allow_headers=["*"], # Разрешаем все заголовки
+)
+
+
 
 app.include_router(users_router)
 app.include_router(tasks_router)

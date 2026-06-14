@@ -24,7 +24,7 @@ const success_function = () =>{
     <MyForm 
         title="Создать новый тег"
         :data="data" 
-        url="tags/create/" 
+        url="tags/create" 
         :success_function="success_function" 
         :mutated_keys_list="['tags']"
     >

@@ -1,5 +1,4 @@
 <script lang='ts' setup>
-import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { useToast } from 'primevue/usetoast';
 import MyButton from './MyButton.vue';

@@ -1,15 +1,19 @@
 
-from pathlib import Path
 from typing import Annotated
 from fastapi import Depends
 from sqlmodel import  SQLModel, Session, create_engine
+import os
 
-BASE_DIR = Path(__file__).resolve().parent
-sqlite_file_path = BASE_DIR / "database.db"
-sqlite_url = f"sqlite:///{sqlite_file_path}"
+# 1. Проверяем переменную окружения. Если её нет, берем локальный sqlite
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./database.db")
 
-connect_args = {"check_same_thread": False}
-engine = create_engine(sqlite_url, connect_args=connect_args)
+# 2. Маленький нюанс: для SQLite нужен специальный флаг check_same_thread
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+else:
+    engine = create_engine(DATABASE_URL)
+
+
 
 # Параметр check_same_thread=False позволяет FastAPI использовать одну и ту же базу данных SQLite в разных потоках.
 #  Это необходимо, так как один запрос может использовать больше одного потока (например, в зависимостях).

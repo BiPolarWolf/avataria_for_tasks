@@ -10,6 +10,8 @@ services:
       - POSTGRES_PASSWORD=password # На сервере заменим на надежный из .env
       - POSTGRES_DB=hello_db
     # Порты наружу не пробрасываем ради безопасности
+    ports:
+      - "5433:5432"
 
   backend:
     build: ./backend

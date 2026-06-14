@@ -31,7 +31,7 @@ const success_function = () =>{
     <MyForm 
         title="Создать новую запись"
         :data="data" 
-        url="notes/create/" 
+        url="notes/create" 
         :success_function="success_function" 
         :mutated_keys_list="['notes']"
     >

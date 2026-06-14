@@ -24,7 +24,7 @@ const success_function = () =>{
     <MyForm 
         title="Создать новую задачу"
         :data="data" 
-        url="tasks/create/" 
+        url="tasks/create" 
         :success_function="success_function" 
         :mutated_keys_list="['tasks']"
     
