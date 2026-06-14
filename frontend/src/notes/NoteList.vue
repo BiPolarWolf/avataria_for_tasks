@@ -7,7 +7,6 @@ import ApiContainer from '@/components/ApiContainer.vue'
 import DeleteConfirmButton from '@/components/DeleteConfirmButton.vue'
 import MyButton from '@/components/MyButton.vue'
 
-
 const selected_note = ref(null)
 const visible = ref(false)
 
@@ -27,7 +26,6 @@ const delete_from_opened = (note_id:number) => {
 } 
 
 </script>
-
 
 <template>
   <ApiContainer apiUrl="/notes/"  :queryKeys="['notes']">
@@ -76,9 +74,6 @@ xw
               @click="() => delete_from_opened(note.id)" 
             >скрыть</MyButton>
           </template>
-
-
-
 
           <DeleteConfirmButton
             size="small"
