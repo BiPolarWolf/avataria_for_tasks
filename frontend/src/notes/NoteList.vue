@@ -6,6 +6,7 @@ import Tag from '@/tags/Tag.vue'
 import ApiContainer from '@/components/ApiContainer.vue'
 import DeleteConfirmButton from '@/components/DeleteConfirmButton.vue'
 import MyButton from '@/components/MyButton.vue'
+import NoteUpdateDialog from './NoteUpdateDialog.vue'
 
 const selected_note = ref(null)
 const visible = ref(false)
@@ -28,6 +29,8 @@ const delete_from_opened = (note_id:number) => {
 </script>
 
 <template>
+  <NoteUpdateDialog v-model:visible="visible" v-model:initial="selected_note" ></NoteUpdateDialog>
+
   <ApiContainer apiUrl="/notes/"  :queryKeys="['notes']">
     <template v-slot:default="{ data }">
       <MyCard class="my-3" v-for="note in data">
@@ -62,6 +65,7 @@ xw
 
         <template #actions>
 
+
           <template v-if="!opened_notes.includes(note.id)">
             <MyButton 
               size="small"
@@ -74,6 +78,11 @@ xw
               @click="() => delete_from_opened(note.id)" 
             >скрыть</MyButton>
           </template>
+
+
+          <MyButton size="small" severity="info" v-on:click="() =>update_note(note)"  class="detail_button">
+              Изменить  <img src="@/assets/icons/Wrench.png" style="width: 18px;" alt="">
+          </MyButton>
 
           <DeleteConfirmButton
             size="small"

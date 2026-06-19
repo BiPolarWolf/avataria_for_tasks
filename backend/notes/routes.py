@@ -46,12 +46,12 @@ def create_note(note_data: NoteCreate, user: current_active_user_dep, session: S
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Ошибка сервера")
 
 
-@router.post("/{note_id}", response_model=NoteRead)
-def update_note(note_id: int, note_data: NoteUpdate, user: current_active_user_dep, session: SessionDep):
+@router.post("/update", response_model=NoteRead)
+def update_note(note_data: NoteUpdate, user: current_active_user_dep, session: SessionDep):
     service = NoteService(session)
 
     try:
-        return service.update_note(note_id, note_data, user)
+        return service.update_note(note_data, user)
     except NoteNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except NoteIncorrectAuthorError as e:
