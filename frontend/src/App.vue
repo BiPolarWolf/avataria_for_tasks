@@ -1,121 +1,157 @@
 
 <script setup lang="ts">
 import GameContainer from '@/GameContainer.vue'
-import {ScrollPanel} from 'primevue';
-import { useAuthStore } from './stores/auth';
-import { Toast } from 'primevue';
-import MyButton from './components/MyButton.vue';
+import { ScrollPanel } from 'primevue'
+import { useAuthStore } from './stores/auth'
+import { Toast } from 'primevue'
+import MyButton from './components/MyButton.vue'
 
 const authStore = useAuthStore()
-
 </script>
 
 <template>
-  <Toast></Toast>
-  <div class="h-screen mx-auto flex flex-row">
+  <Toast />
 
-      <div class="basis-6/12">
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="topbar__links">
+        <RouterLink class="ui-btn" to="/"> Главная </RouterLink>
+        <RouterLink class="ui-btn" to="/notes"><i class="pi pi-book"></i> Записи </RouterLink>
+        <RouterLink class="ui-btn" to="/tasks"><i class="pi pi-check-square"></i> Задачи </RouterLink>
+        <RouterLink class="ui-btn" to="/tags"><i class="pi pi-tag"></i> Теги </RouterLink>
+      </div>
 
-       <nav class=" h-1/12 content-center justify-content-center justify-center">
+      <div class="topbar__actions">
+        <MyButton v-if="!authStore.isAuthenticated" severity="danger">Войти</MyButton>
+        <template v-else>
+          <RouterLink class="ui-btn" to="/profile">
+            {{ authStore.user?.username }}
+          </RouterLink>
 
-      <div class="nav_row">
-        <div class="nav_group">
-          <RouterLink class="ui-btn" to="/"> Главная </RouterLink>
-          <RouterLink class="ui-btn" to="/notes"><i class="pi pi-book"></i> Записи </RouterLink>
-          <RouterLink class="ui-btn" to="/tasks"><i class="pi pi-check-square"></i> Задачи </RouterLink> 
-          <RouterLink class="ui-btn" to="/tags"><i class="pi pi-tag"></i> Теги </RouterLink>
-        </div>
+          <button class="ui-btn ui-btn--danger "  v-on:click="()=>authStore.logout()">Выйти</button>
 
-        
-          <div class="nav_group nav_group--right">
+        </template>
 
-            <div v-if="!authStore.isAuthenticated" >
-            <RouterLink  class="ui-btn" to="/login"> Войти </RouterLink>
-            </div>
-            
-            <div v-else class="nav_group">
-            <RouterLink class="ui-btn" to="/profile">
-              <img src="@/assets/icons/Briefcase.png" alt="">
-              {{ authStore.user?.username }}
-            </RouterLink> 
-              <button class="ui-btn ui-btn--danger "  v-on:click="()=>authStore.logout()">Выйти</button>
-            </div>
+      </div>
+    </header>
 
+    <div class="main-layout bg-primary-700">
+      <section class="page-panel">
+        <ScrollPanel class="page-scroll">
+          <div class="page-scroll__content bg-primary-700">
+            <RouterView />
           </div>
-        </div>
-          
-        </nav>
-
-        <div class="m-auto h-11/12 bg-primary-700">
-        <ScrollPanel class="custom_scroll_panel" style="width: 98%; height: 100%; padding: 10px;"  >
-          <RouterView />
         </ScrollPanel>
-        </div>
+      </section>
 
-      </div>
-      <div class="basis-6/12 bg-secondary window">
-        <GameContainer/>
-      </div>
+      <section class="game-panel">
+        <GameContainer />
+      </section>
+    </div>
   </div>
-
 
 </template>
 
 <style scoped>
-
-nav {
-  padding-left: 10px;
-  background-color: var(--color-primary-900);
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-.nav_row {
+.topbar {
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding-right: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--color-primary-900);
 }
 
-.nav_group {
+.topbar__links,
+.topbar__actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.1rem;
+  gap: 0.5rem;
 }
 
-.nav_group--right {
-  justify-content: flex-end;
+.main-layout {
+  flex: 1;
+  min-height: 0;
+  display: flex;
 }
 
-.nav_link {
-  padding: 15px;
-  margin: 0px 2px ;
-  border : 5px solid var(--color-secondary-900);
-  background-color: var(--color-secLinondary-600);
-  color: wheat
+.page-panel {
+  flex: 3;
+  min-width: 0;
+  min-height: 0;
+  padding: 0.5rem;
 }
 
-.nav_link {
-  padding: 15px;
-  margin: 0px 2px ;
-  border : 5px solid var(--color-secondary-900);
-  background-color: var(--color-secondary-600);
-  color: wheat
+.game-panel {
+  flex: 2;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
 
-
-
-.nav_link:hover {
-  padding: 16px;
-  background-color: var(--color-secondary-500);
+.page-scroll {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
 }
 
-
-.custom_scroll_panel :deep(.p-scrollpanel-bar-y){
-    background-color: var(--color-primary-600);
+.page-scroll__content {
+  min-height: 100%;
+  padding: 1rem;
 }
 
-.window{
-  border: 15px solid var(--color-secondary-800);
+.page-scroll :deep(.p-scrollpanel-wrapper) {
+  inset: 0;
+}
+
+.page-scroll :deep(.p-scrollpanel-content) {
+  height: 100%;
+}
+
+.page-scroll :deep(.p-scrollpanel-bar-y) {
+  background-color: var(--color-primary-600);
+}
+
+@media (max-width: 960px) {
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .main-layout {
+    display: block;
+  }
+
+  .topbar__links,
+  .topbar__actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .topbar__links :deep(.ui-btn),
+  .topbar__actions :deep(.ui-btn) {
+    width: 100%;
+  }
+
+  .page-panel {
+    width: 100%;
+    flex: none;
+  }
+
+  .game-panel {
+    display: none;
+  }
 }
 </style>
