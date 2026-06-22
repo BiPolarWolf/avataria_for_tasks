@@ -7,6 +7,12 @@ import ApiContainer from '@/components/ApiContainer.vue'
 import DeleteConfirmButton from '@/components/DeleteConfirmButton.vue'
 import MyButton from '@/components/MyButton.vue'
 import NoteUpdateDialog from './NoteUpdateDialog.vue'
+import { useSettingsStore } from '@/stores/settings'
+
+
+const settingsStore = useSettingsStore()
+
+const {showNotesText }  = settingsStore
 
 const selected_note = ref(null)
 const visible = ref(false)
@@ -35,8 +41,10 @@ const delete_from_opened = (note_id:number) => {
     <template v-slot:default="{ data }">
       <MyCard class="my-3" v-for="note in data">
       <template #content>
+        
 
-        <template v-if="opened_notes.includes(note.id)">
+
+        <template v-if=" showNotesText || opened_notes.includes(note.id)">
         <p class="task_description"> {{note.text}} </p>
         <br>
         <p >Важность:  <img class="w-6 inline" v-for="value in note.importans"  src="@/assets/icons/CatHead.png" alt="()"></p>
@@ -65,20 +73,20 @@ xw
 
         <template #actions>
 
-
-          <template v-if="!opened_notes.includes(note.id)">
-            <MyButton 
-              size="small"
-              @click="() => push_to_opened(note.id)" 
-            >подробнее</MyButton>
+          <template v-if=" !showNotesText">
+              <template v-if="!opened_notes.includes(note.id)">
+                <MyButton 
+                  size="small"
+                  @click="() => push_to_opened(note.id)" 
+                >подробнее</MyButton>
+              </template>
+              <template v-else>
+                <MyButton 
+                  size="small"
+                  @click="() => delete_from_opened(note.id)" 
+                >скрыть</MyButton>
+              </template>
           </template>
-          <template v-else>
-            <MyButton 
-              size="small"
-              @click="() => delete_from_opened(note.id)" 
-            >скрыть</MyButton>
-          </template>
-
 
           <MyButton size="small" severity="info" v-on:click="() =>update_note(note)"  class="detail_button">
               Изменить  <img src="@/assets/icons/Wrench.png" style="width: 18px;" alt="">

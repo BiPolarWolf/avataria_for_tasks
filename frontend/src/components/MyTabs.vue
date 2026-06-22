@@ -1,5 +1,5 @@
 <script lang='ts' setup>
-import {Tab, TabPanel, Tabs, TabList} from 'primevue';
+import {Tab, TabPanel, TabPanels, Tabs, TabList} from 'primevue';
 
 interface Props {
   tabs: {value:string,title:string}[]
@@ -15,7 +15,7 @@ const props = defineProps<Props>()
         <TabList class="custom_tablist">
             <Tab v-for="tab in tabs" :key="tab.value" :value="tab.value" >{{ tab.title }}</Tab>
         </TabList>
-        <TabPanels>
+        <TabPanels class="custom_tabpanels">
             <TabPanel class="custom_tabpanel" v-for="tab in tabs" :key="tab.value" :value="tab.value">
                 <div class="p-3 text-white">
                     <slot  :name="tab.value"> "{{ tab.title }}" не заполнен </slot>
@@ -30,6 +30,10 @@ const props = defineProps<Props>()
 .custom_tabs {
     width: 100%;
     min-width: 0;
+}
+
+.custom_tabpanels{
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .custom_tabpanel {
@@ -77,6 +81,5 @@ const props = defineProps<Props>()
 }
 
 </style>
-
 
 

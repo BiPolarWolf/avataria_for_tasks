@@ -16,6 +16,7 @@ const authStore = useAuthStore()
     <header class="topbar">
       <div class="topbar__links">
         <RouterLink class="ui-btn" to="/"> Главная </RouterLink>
+        <RouterLink class="ui-btn" to="/settings"><i class="pi pi-cog"></i> Настройки </RouterLink>
         <RouterLink class="ui-btn" to="/notes"><i class="pi pi-book"></i> Записи </RouterLink>
         <RouterLink class="ui-btn" to="/tasks"><i class="pi pi-check-square"></i> Задачи </RouterLink>
         <RouterLink class="ui-btn" to="/tags"><i class="pi pi-tag"></i> Теги </RouterLink>
