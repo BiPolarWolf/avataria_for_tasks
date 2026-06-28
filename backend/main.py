@@ -20,14 +20,13 @@ from fastapi import Response
 COOKIE_SECURE = os.getenv("COOKIE_SECURE", "false").lower() == "true"
 
 
-
 @asynccontextmanager
 async def lifespan(app:FastAPI):
 
     # --- ДЕЙСТВИЯ ПРИ СТАРТЕ ---
     # Создаем таблицы в Postgres, если их еще нет
     create_db_and_tables() 
-    print("База данных готова к работе")
+    print("База данных готова к работе ")
     
     yield  # Здесь приложение "живет" и обрабатывает запросы
     
