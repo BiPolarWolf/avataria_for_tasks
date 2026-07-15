@@ -46,9 +46,9 @@ const show = () => {
 /* Стили для самого контейнера карты */
 .custom-card {
     text-align: left;
-    background-color: #f6d6bd;
-    border: 2.5px solid #927878;
-    color : #826373;
+    background-color: var(--surface);
+    border: 2.5px solid var(--border);
+    color : var(--muted);
 }
 
 .actions {
@@ -59,12 +59,12 @@ const show = () => {
 
 
 .custom-card:hover {
-    background-color: rgb(233, 215, 203);
+    background-color: var(--surface-raised);
 }
 
 /* Стили для внутреннего контента PrimeVue Card */
 .custom-card :deep(.p-card-content) {
     padding: 0; /* Убираем стандартные отступы */
-    color: #373737;
+    color: var(--text);
 }
 </style>

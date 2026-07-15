@@ -1,4 +1,5 @@
 import '../public/assets/main.css'
+import '@/theme/tokens.css'
 import { createApp } from 'vue'
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
@@ -8,6 +9,7 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router/index'
+import { useThemeStore } from './stores/theme'
 
 
 const pinia = createPinia()
@@ -22,7 +24,11 @@ app.use(PrimeVue, {
 
 
 app.use(router) // Подключаем роутер
-app.use(pinia) 
+app.use(pinia)
 app.use(ToastService)
 app.use(VueQueryPlugin)
+
+// Применяем сохранённую тему до монтирования, чтобы не было мигания.
+useThemeStore()
+
 app.mount('#app')

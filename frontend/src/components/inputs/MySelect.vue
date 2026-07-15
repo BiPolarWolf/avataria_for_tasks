@@ -156,7 +156,7 @@ watch(
 .pixel-label {
   font-weight: bold;
   font-size: 0.85rem;
-  color: var(--color-paper-800);
+  color: var(--muted);
   padding-left: 5px;
 }
 
@@ -166,24 +166,24 @@ watch(
 
 .custom-pixel-select {
   width: 100%;
-  border: 3px solid var(--color-paper-500) !important;
+  border: 3px solid var(--border) !important;
   border-radius: 0 !important;
-  background-color: var(--color-paper-50) !important;
-  color: var(--color-paper-950) !important;
-  box-shadow: inset 2px 2px 0 var(--color-paper-200);
-  font-family: 'PixeloidSans', sans-serif;
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+  box-shadow: inset 2px 2px 0 var(--surface-sunken);
+  font-family: var(--font-body);
 }
 
 .custom-pixel-select:hover {
-  border-color: var(--color-paper-700) !important;
+  border-color: var(--border-strong) !important;
 }
 
 .custom-pixel-select.p-focus,
 .custom-pixel-select:focus-within {
   outline: none !important;
-  border-color: var(--color-paper-700) !important;
-  background-color: #ffffff !important;
-  box-shadow: inset 2px 2px 0 var(--color-paper-300);
+  border-color: var(--border-strong) !important;
+  background-color: var(--surface) !important;
+  box-shadow: inset 2px 2px 0 var(--accent-subtle);
 }
 
 .input-error {
@@ -210,13 +210,13 @@ watch(
 :deep(.p-select-label),
 :deep(.p-multiselect-label) {
   padding: 10px 14px !important;
-  color: var(--color-paper-950) !important;
-  font-family: 'PixeloidSans', sans-serif;
+  color: var(--text) !important;
+  font-family: var(--font-body);
 }
 
 :deep(.p-select-dropdown),
 :deep(.p-multiselect-dropdown) {
-  color: var(--color-paper-900) !important;
+  color: var(--muted) !important;
 }
 
 :deep(.p-multiselect-label-container) {
@@ -236,81 +236,81 @@ watch(
 }
 
 :deep(.p-multiselect-chip) {
-  border: 2px solid var(--color-paper-700);
+  border: 2px solid var(--border-strong);
   border-radius: 0;
-  background: linear-gradient(180deg, var(--color-paper-200), var(--color-paper-300));
-  color: var(--color-secondary-950);
+  background: linear-gradient(180deg, var(--surface-sunken), var(--accent-subtle));
+  color: var(--text);
   font-size: 0.78rem;
-  box-shadow: 2px 2px 0 rgba(15, 43, 64, 0.18);
+  box-shadow: 2px 2px 0 var(--shadow);
 }
 
 :deep(.p-placeholder) {
-  color: var(--color-secondary-500) !important;
+  color: var(--muted) !important;
 }
 </style>
 
 <style>
 .custom-pixel-select-panel {
-  border: 3px solid var(--color-paper-700) !important;
+  border: 3px solid var(--border-strong) !important;
   border-radius: 0 !important;
-  background: var(--color-paper-50) !important;
+  background: var(--surface) !important;
   box-shadow:
-    inset 2px 2px 0 var(--color-paper-200),
-    5px 5px 0 rgba(15, 43, 64, 0.35) !important;
-  color: var(--color-paper-950) !important;
-  font-family: 'PixeloidSans', sans-serif;
+    inset 2px 2px 0 var(--surface-sunken),
+    5px 5px 0 var(--shadow) !important;
+  color: var(--text) !important;
+  font-family: var(--font-body);
 }
 
 .custom-pixel-select-panel .p-select-list,
 .custom-pixel-select-panel .p-multiselect-list {
   padding: 6px !important;
-  background: var(--color-paper-50) !important;
+  background: var(--surface) !important;
 }
 
 .custom-pixel-select-panel .p-select-option,
 .custom-pixel-select-panel .p-multiselect-option {
   margin-bottom: 4px;
   border-radius: 0 !important;
-  color: var(--color-paper-950) !important;
+  color: var(--text) !important;
 }
 
 .custom-pixel-select-panel .p-select-option:hover,
 .custom-pixel-select-panel .p-multiselect-option:hover,
 .custom-pixel-select-panel .p-select-option.p-focus,
 .custom-pixel-select-panel .p-multiselect-option.p-focus {
-  background: var(--color-paper-200) !important;
+  background: var(--surface-sunken) !important;
 }
 
 .custom-pixel-select-panel .p-select-option.p-select-option-selected,
 .custom-pixel-select-panel .p-multiselect-option.p-multiselect-option-selected {
-  background: var(--color-paper-300) !important;
-  color: var(--color-secondary-950) !important;
+  background: var(--accent-subtle) !important;
+  color: var(--text) !important;
   font-weight: 700;
 }
 
 .custom-pixel-select-panel .p-select-header,
 .custom-pixel-select-panel .p-multiselect-header {
-  border-bottom: 3px solid var(--color-paper-300) !important;
+  border-bottom: 3px solid var(--accent-subtle) !important;
   border-radius: 0 !important;
-  background: var(--color-paper-100) !important;
+  background: var(--surface-raised) !important;
 }
 
 .custom-pixel-select-panel .p-select-filter,
 .custom-pixel-select-panel .p-multiselect-filter {
-  border: 3px solid var(--color-paper-500) !important;
+  border: 3px solid var(--border) !important;
   border-radius: 0 !important;
-  background: var(--color-paper-50) !important;
-  color: var(--color-paper-950) !important;
-  font-family: 'PixeloidSans', sans-serif;
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  font-family: var(--font-body);
 }
 
 .custom-pixel-select-panel .p-checkbox-box {
-  border: 2px solid var(--color-paper-700) !important;
+  border: 2px solid var(--border-strong) !important;
   border-radius: 0 !important;
 }
 
 .custom-pixel-select-panel .p-checkbox-checked .p-checkbox-box {
-  border-color: var(--color-paper-800) !important;
-  background: var(--color-paper-500) !important;
+  border-color: var(--accent) !important;
+  background: var(--accent) !important;
 }
 </style>

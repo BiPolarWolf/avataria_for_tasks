@@ -109,9 +109,9 @@ xw
 <style scoped>
 
 .detail_button{
-  background-color: var(--color-secondary-500);
-  border: 4px solid var(--color-secondary-800);
-  color: white;
+  background-color: var(--muted);
+  border: 4px solid var(--text);
+  color: var(--accent-text);
 }
 
 .task_actions {

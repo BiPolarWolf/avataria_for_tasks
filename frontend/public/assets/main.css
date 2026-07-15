@@ -1,46 +1,28 @@
 @import "tailwindcss";
 @import 'primeicons/primeicons.css';
 
+
+/* ============================================================================
+   ТЕМЫ ЖИВУТ В src/theme/themes.ts (смысловые цвета) и src/theme/tokens.css
+   (производные оттенки). Стор src/stores/theme.ts пишет базовые токены на :root.
+   Здесь — только регистрация этих токенов как Tailwind-утилит и структурный CSS.
+   ============================================================================ */
+
+/* Смысловые токены → Tailwind-утилиты (bg-surface, text-accent, bg-brand …).
+   Значения приходят в рантайме из :root (stores/theme + theme/tokens.css). */
 @theme {
-
---color-primary-50: #f1f4f7;
-  --color-primary-100: #e2e8ee;
-  --color-primary-200: #c5d2dd;
-  --color-primary-300: #97b0c3;
-  --color-primary-400: #6488a4;
-  --color-primary-500: #446988;
-  --color-primary-600: #35536e;
-  --color-primary-700: #2c4359;
-  --color-primary-800: #263a4b;
-  --color-primary-900: #0f2b40; /* Твой исходный цвет */
-  --color-primary-950: #0a1d2b;
-
-  --color-secondary-50: #f7f5f6;
-  --color-secondary-100: #ede9eb;
-  --color-secondary-200: #ddd5da;
-  --color-secondary-300: #c5b6bf;
-  --color-secondary-400: #a7919e;
-  --color-secondary-500: #826372; /* Твой исходный цвет */
-  --color-secondary-600: #715462;
-  --color-secondary-700: #5f4652;
-  --color-secondary-800: #503c46;
-  --color-secondary-900: #44353d;
-  --color-secondary-950: #291e24;
-
-  /* Твоя палитра Paper */
-  --color-paper-50: #fcf8f3;
-  --color-paper-100: #f7eddf;
-  --color-paper-200: #f1e2cc;
-  --color-paper-300: #eed1b9; /* Твой базовый цвет */
-  --color-paper-400: #e1b896;
-  --color-paper-500: #d19d74;
-  --color-paper-600: #b87e56;
-  --color-paper-700: #996341;
-  --color-paper-800: #7d5138;
-  --color-paper-900: #684331;
-  --color-paper-950: #382218;
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-text: var(--accent-text);
+  --color-brand: var(--brand);
+  --color-brand-text: var(--brand-text);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
 }
-
 
 
 @font-face {
@@ -92,20 +74,21 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed; 
-    min-height: 100vh; 
-    font-family: "PixeloidSans";
+    min-height: 100vh;
+    /* Глобальный шрифт из активной темы (stores/theme → --font-body). */
+    font-family: var(--font-body, 'PixeloidSans', sans-serif);
 
 }
 
 /* База кнопки: форма, шрифт, тени, анимация */
 .ui-btn {
-    --ui-btn-bg-top: var(--color-paper-300);
-    --ui-btn-bg-bottom: var(--color-paper-500);
-    --ui-btn-bg-top-hover: var(--color-paper-200);
-    --ui-btn-bg-bottom-hover: var(--color-paper-400);
-    --ui-btn-border: var(--color-paper-800);
-    --ui-btn-border-hover: var(--color-secondary-800);
-    --ui-btn-text: var(--color-secondary-950);
+    --ui-btn-bg-top: var(--surface-raised);
+    --ui-btn-bg-bottom: var(--surface-sunken);
+    --ui-btn-bg-top-hover: var(--surface);
+    --ui-btn-bg-bottom-hover: var(--surface-sunken);
+    --ui-btn-border: var(--border);
+    --ui-btn-border-hover: var(--border-strong);
+    --ui-btn-text: var(--text);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -116,9 +99,9 @@ body {
     background: linear-gradient(180deg, var(--ui-btn-bg-top) 0%, var(--ui-btn-bg-bottom) 100%) !important;
     box-shadow:
       inset 0 2px 0 rgba(255, 255, 255, 0.28),
-      4px 4px 0 rgba(15, 43, 64, 0.35) !important;
+      4px 4px 0 var(--shadow) !important;
     color: var(--ui-btn-text) !important;
-    font-family: 'PixeloidSans', sans-serif !important;
+    font-family: var(--font-body, 'PixeloidSans', sans-serif) !important;
     font-size: 0.95rem;
     line-height: 1.1;
     font-weight: 500;
@@ -137,14 +120,14 @@ body {
     transform: translateY(-1px);
     box-shadow:
       inset 0 2px 0 rgba(255, 255, 255, 0.28),
-      5px 5px 0 rgba(15, 43, 64, 0.4) !important;
+      5px 5px 0 var(--shadow) !important;
 }
 
 .ui-btn:active:not(:disabled):not(.p-disabled) {
     transform: translate(2px, 2px);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.2),
-      2px 2px 0 rgba(15, 43, 64, 0.28) !important;
+      2px 2px 0 var(--shadow) !important;
 }
 
 .ui-btn:disabled,
@@ -154,7 +137,7 @@ body {
     cursor: not-allowed;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.2),
-      2px 2px 0 rgba(15, 43, 64, 0.2) !important;
+      2px 2px 0 var(--shadow) !important;
 }
 
 /* Размеры и служебные варианты */
@@ -187,24 +170,24 @@ body {
 .ui-btn--primary,
 .ui-btn.p-button-info,
 .ui-btn.p-button-contrast {
-    --ui-btn-bg-top: var(--color-primary-300);
-    --ui-btn-bg-bottom: var(--color-primary-600);
-    --ui-btn-bg-top-hover: var(--color-primary-200);
-    --ui-btn-bg-bottom-hover: var(--color-primary-500);
-    --ui-btn-border: var(--color-primary-600);
-    --ui-btn-border-hover: var(--color-primary-700);
-    --ui-btn-text: var(--color-paper-50);
+    --ui-btn-bg-top: var(--accent-hover);
+    --ui-btn-bg-bottom: var(--accent);
+    --ui-btn-bg-top-hover: color-mix(in srgb, var(--accent-hover) 70%, white);
+    --ui-btn-bg-bottom-hover: var(--accent-hover);
+    --ui-btn-border: var(--accent);
+    --ui-btn-border-hover: var(--accent-active);
+    --ui-btn-text: var(--accent-text);
 }
 
 .ui-btn--secondary,
 .ui-btn.p-button-secondary {
-    --ui-btn-bg-top: var(--color-secondary-300);
-    --ui-btn-bg-bottom: var(--color-secondary-500);
-    --ui-btn-bg-top-hover: var(--color-secondary-200);
-    --ui-btn-bg-bottom-hover: var(--color-secondary-400);
-    --ui-btn-border: var(--color-secondary-900);
-    --ui-btn-border-hover: var(--color-secondary-950);
-    --ui-btn-text: var(--color-paper-50);
+    --ui-btn-bg-top: color-mix(in srgb, var(--muted) 60%, white);
+    --ui-btn-bg-bottom: var(--muted);
+    --ui-btn-bg-top-hover: color-mix(in srgb, var(--muted) 40%, white);
+    --ui-btn-bg-bottom-hover: color-mix(in srgb, var(--muted) 80%, white);
+    --ui-btn-border: var(--text);
+    --ui-btn-border-hover: var(--text);
+    --ui-btn-text: var(--accent-text);
 }
 
 .ui-btn--success,
@@ -242,13 +225,13 @@ body {
 
 .ui-btn--ghost,
 .ui-btn.p-button-outlined {
-    --ui-btn-bg-top: rgba(252, 248, 243, 0.72);
-    --ui-btn-bg-bottom: rgba(241, 226, 204, 0.78);
-    --ui-btn-bg-top-hover: rgba(252, 248, 243, 0.92);
-    --ui-btn-bg-bottom-hover: rgba(238, 209, 185, 0.92);
-    --ui-btn-border: var(--color-paper-700);
-    --ui-btn-border-hover: var(--color-secondary-800);
-    --ui-btn-text: var(--color-secondary-900);
+    --ui-btn-bg-top: color-mix(in srgb, var(--surface-raised) 72%, transparent);
+    --ui-btn-bg-bottom: color-mix(in srgb, var(--surface) 78%, transparent);
+    --ui-btn-bg-top-hover: color-mix(in srgb, var(--surface-raised) 92%, transparent);
+    --ui-btn-bg-bottom-hover: color-mix(in srgb, var(--surface) 92%, transparent);
+    --ui-btn-border: var(--border);
+    --ui-btn-border-hover: var(--border-strong);
+    --ui-btn-text: var(--text);
 }
 
 

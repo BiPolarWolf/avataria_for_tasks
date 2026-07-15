@@ -112,15 +112,15 @@ function submit(){
 <style scoped>
 
 hr{
-    background-color:  var(--color-paper-500); 
-    color : var(--color-paper-500);
+    background-color:  var(--border);
+    color : var(--border);
     padding: 2px 0px;
 }
 
 .form_class{
-    background-color: var(--color-paper-400);
-    border: 5px solid var(--color-paper-700);
-    color: var(--color-secondary-900) ;
+    background-color: var(--surface-sunken);
+    border: 5px solid var(--border);
+    color: var(--text) ;
 }
 
 .form_title{

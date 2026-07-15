@@ -9,15 +9,15 @@ defineOptions({
 <template>
   <Dialog :draggable="false" v-bind="$attrs"
   :pt="{
-      root: { class: 'bg-paper-400 !border-none !shadow-none '},
-      header: { class: 'bg-paper-500 text-white !border-none' },
-      footer: { class: 'bg-paper-500 text-white !border-none' },
-      content: { class: 'bg-paper-500' },
+      root: { class: 'bg-surface !border-none !shadow-none '},
+      header: { class: 'bg-surface-sunken text-text !border-none' },
+      footer: { class: 'bg-surface-sunken text-text !border-none' },
+      content: { class: 'bg-surface' },
 
       // Стилизация кнопки закрытия
       pcCloseButton: {
-        root: { 
-          class: '!bg-paper-700  hover:!bg-paper-800 !text-paper-400 !w-8 !h-8 !border-none !shadow-none !outline-none transition-colors' 
+        root: {
+          class: '!bg-border  hover:!bg-border-strong !text-accent-text !w-8 !h-8 !border-none !shadow-none !outline-none transition-colors'
         }
       }
 

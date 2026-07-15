@@ -36,10 +36,10 @@ const authStore = useAuthStore()
       </div>
     </header>
 
-    <div class="main-layout bg-primary-700">
+    <div class="main-layout bg-brand">
       <section class="page-panel">
         <ScrollPanel class="page-scroll">
-          <div class="page-scroll__content bg-primary-700">
+          <div class="page-scroll__content bg-brand">
             <RouterView />
           </div>
         </ScrollPanel>
@@ -67,7 +67,7 @@ const authStore = useAuthStore()
   align-items: center;
   gap: 1rem;
   padding: 0.75rem 1.25rem;
-  background-color: var(--color-primary-900);
+  background-color: var(--brand-deep);
 }
 
 .topbar__links,
@@ -121,7 +121,7 @@ const authStore = useAuthStore()
 }
 
 .page-scroll :deep(.p-scrollpanel-bar-y) {
-  background-color: var(--color-primary-600);
+  background-color: var(--brand-scrollbar);
 }
 
 @media (max-width: 960px) {

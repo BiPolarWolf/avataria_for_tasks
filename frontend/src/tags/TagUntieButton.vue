@@ -104,15 +104,15 @@ const confirmUntie = () => {
 }
 
 .hint_text {
-  color: var(--color-secondary-800);
+  color: var(--muted);
   font-size: 0.9rem;
 }
 
 .object_preview {
   margin: 0;
   padding: 0.75rem;
-  border: 2px solid var(--color-paper-700);
-  background: rgba(252, 248, 243, 0.55);
+  border: 2px solid var(--border-strong);
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
 }
 
 .confirm_actions {

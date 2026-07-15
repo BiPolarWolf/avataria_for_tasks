@@ -94,6 +94,7 @@ const login = async () => {
 .form-wrapper {
   max-width: 400px;
   margin: 0 auto;
+  color: var(--brand-text);
 }
 .input-group {
   margin-bottom: 15px;
@@ -106,6 +107,14 @@ const login = async () => {
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
+  background-color: var(--surface);
+  color: var(--text);
+  border: 3px solid var(--border);
+  border-radius: 0;
+}
+.input-group input:focus {
+  outline: none;
+  border-color: var(--border-strong);
 }
 .error {
   color: red;

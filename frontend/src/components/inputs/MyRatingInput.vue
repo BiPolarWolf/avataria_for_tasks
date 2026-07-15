@@ -58,7 +58,7 @@ const setRating = (val: number) => {
 .pixel-label {
   font-weight: bold;
   font-size: 0.85rem;
-  color: var(--color-paper-800);
+  color: var(--muted);
 }
 
 .stars-wrapper {
@@ -106,7 +106,7 @@ const setRating = (val: number) => {
 
 /* Если звезда не активна, заливка сливается с фоном или бумагой */
 .pixel-star:not(.is-active) .star-fill {
-  fill: var(--color-paper-50);
+  fill: var(--surface);
 }
 
 /* Плавная смена цвета */

@@ -81,27 +81,27 @@ watch(
 .pixel-label {
   font-weight: bold;
   font-size: 0.85rem;
-  color: var(--color-paper-800);
+  color: var(--muted);
   padding-left: 5px;
 }
 
 .custom-pixel-input {
-  background-color: var(--color-paper-50) !important;
-  color: var(--color-paper-950) !important;
-  border: 3px solid var(--color-paper-500) !important;
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+  border: 3px solid var(--border) !important;
   border-radius: 0 !important;
   padding: 10px 14px;
   width: 100%;
-  box-shadow: inset 2px 2px 0px var(--color-paper-200);
+  box-shadow: inset 2px 2px 0px var(--surface-sunken);
   font-family: inherit; /* Чтобы наследовался пиксельный шрифт */
   resize: none; /* Отключаем стандартный ресайз, если используем autoResize */
 }
 
 .custom-pixel-input:focus {
   outline: none !important;
-  border-color: var(--color-paper-700) !important;
-  background-color: #ffffff !important;
-  box-shadow: inset 2px 2px 0px var(--color-paper-300);
+  border-color: var(--border-strong) !important;
+  background-color: var(--surface) !important;
+  box-shadow: inset 2px 2px 0px var(--accent-subtle);
 }
 
 .input-error {

@@ -56,9 +56,9 @@ const {isPending, isFetching, isError, data, error } = useQuery({
 
 .error {
   padding: 1rem;
-  border: 3px solid var(--color-secondary-700);
-  background: rgba(241, 226, 204, 0.92);
-  color: var(--color-secondary-900);
+  border: 3px solid var(--border-strong);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
 }
 
 </style>

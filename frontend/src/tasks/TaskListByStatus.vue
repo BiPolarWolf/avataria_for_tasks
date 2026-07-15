@@ -84,9 +84,9 @@ const update_task = (task:any) => {
 <style scoped>
 
 .detail_button{
-  background-color: var(--color-secondary-500);
-  border: 4px solid var(--color-secondary-800);
-  color: white;
+  background-color: var(--muted);
+  border: 4px solid var(--text);
+  color: var(--accent-text);
 }
 
 
@@ -96,9 +96,9 @@ const update_task = (task:any) => {
 
 .task_error {
   padding: 1rem;
-  border: 3px solid var(--color-secondary-700);
-  background: rgba(241, 226, 204, 0.92);
-  color: var(--color-secondary-900);
+  border: 3px solid var(--border-strong);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
 }
 
 </style>

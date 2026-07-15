@@ -41,11 +41,10 @@ const props = defineProps<Props>()
 }
 
 .custom_tablist :deep(.p-tab-active){
-    color: var(--color-secondary-100);
-    /* background-color: var(--color-primary); */
-    background-color: var(--color-secondary-600);
-    
-     
+    color: var(--accent-text);
+    background-color: var(--accent);
+
+
 }
 
 .custom_tablist :deep(.p-tablist-active-bar){
@@ -55,8 +54,8 @@ const props = defineProps<Props>()
 .custom_tablist{
     width: calc(100% - 20px);
     box-sizing: border-box;
-    background-color: var(--color-primary-200);
-    border: 8px solid var(--color-primary-400);
+    background-color: var(--accent-subtle);
+    border: 8px solid var(--accent);
     margin : 10px;
 
 }

@@ -73,7 +73,7 @@ const updateManualColor = (event: Event) => {
 .pixel-label {
   font-weight: bold;
   font-size: 0.85rem;
-  color: var(--color-paper-800);
+  color: var(--muted);
   padding-left: 5px;
 }
 
@@ -84,33 +84,33 @@ const updateManualColor = (event: Event) => {
   gap: 10px;
   width: 100%;
   padding: 8px 10px;
-  border: 3px solid var(--color-paper-500);
+  border: 3px solid var(--border);
   border-radius: 0;
-  background-color: var(--color-paper-50);
-  box-shadow: inset 2px 2px 0 var(--color-paper-200);
+  background-color: var(--surface);
+  box-shadow: inset 2px 2px 0 var(--surface-sunken);
 }
 
 .color-row:focus-within {
-  border-color: var(--color-paper-700);
-  background-color: #ffffff;
-  box-shadow: inset 2px 2px 0 var(--color-paper-300);
+  border-color: var(--border-strong);
+  background-color: var(--surface);
+  box-shadow: inset 2px 2px 0 var(--accent-subtle);
 }
 
 .picker-shell {
   display: inline-flex;
   padding: 3px;
-  border: 2px solid var(--color-paper-700);
-  background: linear-gradient(180deg, var(--color-paper-200), var(--color-paper-300));
-  box-shadow: 2px 2px 0 rgba(15, 43, 64, 0.22);
+  border: 2px solid var(--border-strong);
+  background: linear-gradient(180deg, var(--surface-sunken), var(--accent-subtle));
+  box-shadow: 2px 2px 0 var(--shadow);
 }
 
 .color-preview {
   width: 42px;
   height: 42px;
-  border: 3px solid var(--color-paper-800);
+  border: 3px solid var(--border-strong);
   box-shadow:
     inset 2px 2px 0 rgba(255, 255, 255, 0.35),
-    2px 2px 0 rgba(15, 43, 64, 0.24);
+    2px 2px 0 var(--shadow);
 }
 
 .color-input {
@@ -119,13 +119,13 @@ const updateManualColor = (event: Event) => {
   border: 0;
   outline: 0;
   background: transparent;
-  color: var(--color-paper-950);
-  font-family: 'PixeloidSans', sans-serif;
+  color: var(--text);
+  font-family: var(--font-body);
   font-size: 0.95rem;
 }
 
 .color-input::placeholder {
-  color: var(--color-secondary-500);
+  color: var(--muted);
 }
 
 .input-error {
@@ -160,11 +160,11 @@ const updateManualColor = (event: Event) => {
 
 <style>
 .p-colorpicker-panel {
-  border: 3px solid var(--color-paper-700) !important;
+  border: 3px solid var(--border-strong) !important;
   border-radius: 0 !important;
-  background: var(--color-paper-50) !important;
+  background: var(--surface) !important;
   box-shadow:
-    inset 2px 2px 0 var(--color-paper-200),
-    5px 5px 0 rgba(15, 43, 64, 0.35) !important;
+    inset 2px 2px 0 var(--surface-sunken),
+    5px 5px 0 var(--shadow) !important;
 }
 </style>
