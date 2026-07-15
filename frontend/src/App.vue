@@ -109,7 +109,7 @@ const authStore = useAuthStore()
 
 .page-scroll__content {
   min-height: 100%;
-  padding: 1rem;
+  padding: 0.3rem;
 }
 
 .page-scroll :deep(.p-scrollpanel-wrapper) {

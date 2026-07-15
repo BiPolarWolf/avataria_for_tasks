@@ -17,7 +17,7 @@ const props = defineProps<Props>()
         </TabList>
         <TabPanels class="custom_tabpanels">
             <TabPanel class="custom_tabpanel" v-for="tab in tabs" :key="tab.value" :value="tab.value">
-                <div class="p-3 text-white">
+                <div class="px-3 text-white">
                     <slot  :name="tab.value"> "{{ tab.title }}" не заполнен </slot>
                 </div>
             </TabPanel>
@@ -34,6 +34,7 @@ const props = defineProps<Props>()
 
 .custom_tabpanels{
     background-color: rgba(0, 0, 0, 0);
+    padding: 0;
 }
 
 .custom_tabpanel {
