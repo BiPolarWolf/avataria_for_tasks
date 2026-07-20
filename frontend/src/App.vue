@@ -1,6 +1,5 @@
 
 <script setup lang="ts">
-import GameContainer from '@/GameContainer.vue'
 import { ScrollPanel } from 'primevue'
 import { useAuthStore } from './stores/auth'
 import { Toast } from 'primevue'
@@ -44,10 +43,6 @@ const authStore = useAuthStore()
           </div>
         </ScrollPanel>
       </section>
-
-      <section class="game-panel">
-        <GameContainer />
-      </section>
     </div>
   </div>
 
@@ -82,23 +77,15 @@ const authStore = useAuthStore()
   flex: 1;
   min-height: 0;
   display: flex;
+  justify-content: center;
 }
 
 .page-panel {
-  flex: 3;
+  width: 100%;
+  max-width: 1200px;
   min-width: 0;
   min-height: 0;
-  padding: 0.5rem;
-}
-
-.game-panel {
-  flex: 2;
-  min-width: 0;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  padding: 0.5rem clamp(0.5rem, 5vw, 4rem);
 }
 
 .page-scroll {
@@ -148,11 +135,8 @@ const authStore = useAuthStore()
 
   .page-panel {
     width: 100%;
-    flex: none;
-  }
-
-  .game-panel {
-    display: none;
+    max-width: none;
+    padding: 0.3rem;
   }
 }
 </style>
