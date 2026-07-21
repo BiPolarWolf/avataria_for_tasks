@@ -1,8 +1,11 @@
 <script lang='ts' setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import MyForm from '@/components/MyForm.vue'
 import MyTextArea from '@/components/inputs/MyTextArea.vue';
 import MyRatingInput from '@/components/inputs/MyRatingInput.vue';
+
+const router = useRouter()
 
 const data = ref({
     description : '',
@@ -15,6 +18,8 @@ const success_function = () =>{
     description : '',
     complexity : 1
     }
+    // После создания возвращаемся к списку задач.
+    router.push({ name: 'tasks' })
 }
 
 </script>

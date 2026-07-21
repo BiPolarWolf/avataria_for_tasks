@@ -30,7 +30,7 @@ def get_tag(tag_id: int, user: current_active_user_dep, session: SessionDep):
     service = TagService(session)
 
     try:
-        return service.get_tag(tag_id, user)
+        return service.get_tag_by_id(tag_id, user)
     except TagNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except TagIncorrectAuthorError as e:

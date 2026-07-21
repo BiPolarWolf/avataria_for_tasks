@@ -2,24 +2,21 @@
 import MyCard from '@/components/MyCard.vue'
 import { formatShortDate } from '@/utils/general'
 import { ref, type Ref } from 'vue'
+import { useRouter } from 'vue-router'
 import Tag from '@/tags/Tag.vue'
 import ApiContainer from '@/components/ApiContainer.vue'
 import DeleteConfirmButton from '@/components/DeleteConfirmButton.vue'
 import MyButton from '@/components/MyButton.vue'
-import NoteUpdateDialog from './NoteUpdateDialog.vue'
 import { useSettingsStore } from '@/stores/settings'
 
 
 const settingsStore = useSettingsStore()
+const router = useRouter()
 
 const {showNotesText }  = settingsStore
 
-const selected_note = ref(null)
-const visible = ref(false)
-
-const update_note = (task:any) => {
-  visible.value = true
-  selected_note.value = task
+const edit_note = (note_id:number) => {
+  router.push({ name: 'notes-edit', params: { id: note_id } })
 };
 
 const opened_notes : Ref<number[]> = ref([])
@@ -35,8 +32,6 @@ const delete_from_opened = (note_id:number) => {
 </script>
 
 <template>
-  <NoteUpdateDialog v-model:visible="visible" v-model:initial="selected_note" ></NoteUpdateDialog>
-
   <ApiContainer apiUrl="/notes/"  :queryKeys="['notes']">
     <template v-slot:default="{ data }">
       <MyCard class="my-3" v-for="note in data">
@@ -65,7 +60,6 @@ const delete_from_opened = (note_id:number) => {
         <template #subtitle> 
          <span class="font-bold">{{ note.title}}</span> {{ formatShortDate(note.date_update) }}
         </template>
-xw
 
         <template #buttons>
           <span></span>
@@ -88,7 +82,7 @@ xw
               </template>
           </template>
 
-          <MyButton size="small" severity="info" v-on:click="() =>update_note(note)"  class="detail_button">
+          <MyButton size="small" severity="info" v-on:click="() => edit_note(note.id)"  class="detail_button">
               Изменить  <img src="@/assets/icons/Wrench.png" style="width: 18px;" alt="">
           </MyButton>
 

@@ -1,8 +1,11 @@
 <script lang='ts' setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import MyForm from '@/components/MyForm.vue'
 import MyTextInput from '@/components/inputs/MyTextInput.vue';
 import MyColorPicker from '@/components/inputs/MyColorPicker.vue';
+
+const router = useRouter()
 
 const data = ref({
     text : '',
@@ -15,6 +18,8 @@ const success_function = () =>{
         text : '',
         color : '#EAD7BB',
     }
+    // После создания возвращаемся к списку тегов.
+    router.push({ name: 'tags' })
 }
 
 </script>

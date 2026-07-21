@@ -2,8 +2,7 @@
 import MyCard from '@/components/MyCard.vue'
 import MyButton from '@/components/MyButton.vue'
 import { formatShortDate } from '@/utils/general'
-import { ref } from 'vue'
-import TaskUpdateDialog from './TaskUpdateDialog.vue'
+import { useRouter } from 'vue-router'
 import TaskCompleteConfirmButton from './TaskCompleteConfirmButton.vue'
 import DeleteConfirmButton from '@/components/DeleteConfirmButton.vue'
 
@@ -16,20 +15,15 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const router = useRouter()
 
-const selected_task = ref(null)
-const visible = ref(false)
-
-const update_task = (task:any) => {
-  visible.value = true
-  selected_task.value = task
+const edit_task = (task_id:number) => {
+  router.push({ name: 'tasks-edit', params: { id: task_id } })
 };
 </script>
 
 
 <template>
-  
-    <TaskUpdateDialog v-model:visible="visible" v-model:initial="selected_task" />
 
     <ApiContainer :api-url="`/tasks/${props.status}`"  :queryKeys="['tasks', props.status]">
       <template v-slot:default="{ data}">
@@ -52,7 +46,7 @@ const update_task = (task:any) => {
             <template v-if="props.status === 'active'">
 
               <MyButton
-              size="small" severity="info" v-on:click="() =>update_task(task)"  class="detail_button">
+              size="small" severity="info" v-on:click="() => edit_task(task.id)"  class="detail_button">
                   Изменить  <img src="@/assets/icons/Wrench.png" style="width: 18px;" alt="">
               </MyButton>
 

@@ -1,142 +1,239 @@
-
 <script setup lang="ts">
-import { ScrollPanel } from 'primevue'
-import { useAuthStore } from './stores/auth'
+import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { Toast } from 'primevue'
-import MyButton from './components/MyButton.vue'
+import AppSidebar from '@/components/AppSidebar.vue'
 
-const authStore = useAuthStore()
+const route = useRoute()
+
+// Правая колонка показывается, только если у текущего роута есть именованный
+// компонент right. Отсюда «где-то 2, где-то 3 блока».
+const hasRight = computed(() =>
+  route.matched.some((r) => r.components && 'right' in r.components),
+)
+
+// Заголовок текущего раздела для мобильной шапки.
+const title = computed(() => (route.meta.title as string) || 'avataria')
+
+// Мобильные выезжающие панели.
+const navOpen = ref(false)
+const asideOpen = ref(false)
+
+function closeDrawers() {
+  navOpen.value = false
+  asideOpen.value = false
+}
+
+// При смене роута закрываем шторки.
+watch(() => route.fullPath, closeDrawers)
 </script>
 
 <template>
   <Toast />
 
-  <div class="app-shell">
-    <header class="topbar">
-      <div class="topbar__links">
-        <RouterLink class="ui-btn" to="/"> Главная </RouterLink>
-        <RouterLink class="ui-btn" to="/settings"><i class="pi pi-cog"></i> Настройки </RouterLink>
-        <RouterLink class="ui-btn" to="/notes"><i class="pi pi-book"></i> Записи </RouterLink>
-        <RouterLink class="ui-btn" to="/tasks"><i class="pi pi-check-square"></i> Задачи </RouterLink>
-        <RouterLink class="ui-btn" to="/tags"><i class="pi pi-tag"></i> Теги </RouterLink>
-      </div>
-
-      <div class="topbar__actions">
-        <MyButton v-if="!authStore.isAuthenticated" severity="danger">Войти</MyButton>
-        <template v-else>
-          <RouterLink class="ui-btn" to="/profile">
-            {{ authStore.user?.username }}
-          </RouterLink>
-
-          <button class="ui-btn ui-btn--danger "  v-on:click="()=>authStore.logout()">Выйти</button>
-
-        </template>
-
-      </div>
-    </header>
-
-    <div class="main-layout bg-brand">
-      <section class="page-panel">
-        <ScrollPanel class="page-scroll">
-          <div class="page-scroll__content bg-brand">
-            <RouterView />
-          </div>
-        </ScrollPanel>
-      </section>
+  <div
+    class="shell"
+    :class="{ 'shell--has-right': hasRight, 'is-nav-open': navOpen, 'is-aside-open': asideOpen }"
+  >
+    <!-- ЛЕВАЯ: навигация -->
+    <div class="shell__sidebar">
+      <AppSidebar @navigate="closeDrawers" />
     </div>
-  </div>
 
+    <!-- ЦЕНТР -->
+    <main class="shell__center">
+      <div class="mobilebar">
+        <button class="mobilebar__btn" aria-label="Меню" @click="navOpen = !navOpen">
+          <i class="pi pi-bars"></i>
+        </button>
+        <span class="mobilebar__title">{{ title }}</span>
+        <button
+          v-if="hasRight"
+          class="mobilebar__btn"
+          aria-label="Действия"
+          @click="asideOpen = !asideOpen"
+        >
+          <i class="pi pi-sliders-h"></i>
+        </button>
+      </div>
+
+      <div class="shell__scroll">
+        <RouterView />
+      </div>
+    </main>
+
+    <!-- ПРАВАЯ: действия над контентом (опционально) -->
+    <aside v-if="hasRight" class="shell__aside">
+      <div class="shell__scroll shell__scroll--aside">
+        <RouterView name="right" />
+      </div>
+    </aside>
+
+    <!-- Затемнение под мобильные шторки -->
+    <div class="scrim" @click="closeDrawers"></div>
+  </div>
 </template>
 
 <style scoped>
-.app-shell {
-  display: flex;
-  flex-direction: column;
+.shell {
   height: 100vh;
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  background-color: var(--background);
+  color: var(--text);
+}
+.shell--has-right {
+  grid-template-columns: 248px minmax(0, 1fr) 320px;
 }
 
-.topbar {
-  flex-shrink: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.75rem 1.25rem;
-  background-color: var(--brand-deep);
-}
-
-.topbar__links,
-.topbar__actions {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.main-layout {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.page-panel {
-  width: 100%;
-  max-width: 1200px;
+.shell__sidebar {
   min-width: 0;
   min-height: 0;
-  padding: 0.5rem clamp(0.5rem, 5vw, 4rem);
 }
 
-.page-scroll {
-  width: 100%;
-  height: 100%;
+.shell__center {
+  min-width: 0;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-inline: 1px solid var(--border);
 }
 
-.page-scroll__content {
-  min-height: 100%;
-  padding: 0.3rem;
+.shell__aside {
+  min-width: 0;
+  min-height: 0;
+  background-color: var(--surface-sunken);
 }
 
-.page-scroll :deep(.p-scrollpanel-wrapper) {
-  inset: 0;
+/* Прокручиваемая область */
+.shell__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.75rem;
+  scrollbar-gutter: stable;
 }
-
-.page-scroll :deep(.p-scrollpanel-content) {
+.shell__scroll--aside {
   height: 100%;
 }
 
-.page-scroll :deep(.p-scrollpanel-bar-y) {
-  background-color: var(--brand-scrollbar);
+.shell__center .shell__scroll {
+  margin-inline-end: 0.35rem;
+  padding-inline-end: 0.55rem;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 36%, transparent) transparent;
+}
+.shell__center .shell__scroll:hover {
+  scrollbar-color: color-mix(in srgb, var(--accent) 62%, transparent) transparent;
+}
+.shell__center .shell__scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.shell__center .shell__scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.shell__center .shell__scroll::-webkit-scrollbar-thumb {
+  min-height: 44px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--accent) 36%, transparent);
+  background-clip: content-box;
+}
+.shell__center .shell__scroll:hover::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--accent) 62%, transparent);
+}
+.shell__center .shell__scroll::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent);
 }
 
+/* Мобильная шапка — скрыта на десктопе */
+.mobilebar { display: none; }
+.mobilebar__btn {
+  font: inherit;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  background: var(--surface-raised);
+  color: var(--text);
+}
+.mobilebar__btn:active { transform: scale(0.96); }
+
+.scrim { display: none; }
+
+/* ============ Мобильная адаптация ============ */
 @media (max-width: 960px) {
-  .topbar {
-    align-items: stretch;
-    flex-direction: column;
+  .shell {
+    grid-template-columns: 1fr;
+  }
+  .shell--has-right {
+    grid-template-columns: 1fr;
   }
 
-  .main-layout {
+  .shell__center {
+    border-inline: 0;
+  }
+
+  .mobilebar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    background-color: var(--brand-deep);
+    color: var(--brand-text);
+    position: sticky;
+    top: 0;
+    z-index: 3;
+  }
+  .mobilebar__title {
+    flex: 1;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Сайдбар и правая панель становятся выезжающими шторками */
+  .shell__sidebar,
+  .shell__aside {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 256px;
+    z-index: 20;
+    transition: transform 0.28s ease;
+  }
+  .shell__sidebar {
+    left: 0;
+    transform: translateX(-102%);
+    box-shadow: 2px 0 16px var(--shadow);
+  }
+  .shell__aside {
+    right: 0;
+    width: 280px;
+    transform: translateX(102%);
+    box-shadow: -2px 0 16px var(--shadow);
+    border-left: 1px solid var(--border);
+  }
+  .is-nav-open .shell__sidebar { transform: translateX(0); }
+  .is-aside-open .shell__aside { transform: translateX(0); }
+
+  .is-nav-open .scrim,
+  .is-aside-open .scrim {
     display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 15;
+    background-color: color-mix(in srgb, #000 40%, transparent);
   }
+}
 
-  .topbar__links,
-  .topbar__actions {
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .topbar__links :deep(.ui-btn),
-  .topbar__actions :deep(.ui-btn) {
-    width: 100%;
-  }
-
-  .page-panel {
-    width: 100%;
-    max-width: none;
-    padding: 0.3rem;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .shell__sidebar,
+  .shell__aside { transition: none; }
 }
 </style>

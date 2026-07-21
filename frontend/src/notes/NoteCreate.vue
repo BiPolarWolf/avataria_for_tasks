@@ -1,10 +1,13 @@
 <script lang='ts' setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import MyForm from '@/components/MyForm.vue'
 import MyTextArea from '@/components/inputs/MyTextArea.vue';
 import MyRatingInput from '@/components/inputs/MyRatingInput.vue';
 import MyTextInput from '@/components/inputs/MyTextInput.vue';
 import MySelect from '@/components/inputs/MySelect.vue';
+
+const router = useRouter()
 
 const data = ref({
     title : '',
@@ -22,6 +25,8 @@ const success_function = () =>{
     importans : 1,
     tag_ids : []
     }
+    // После создания возвращаемся к списку записей.
+    router.push({ name: 'notes' })
 }
 
 </script>

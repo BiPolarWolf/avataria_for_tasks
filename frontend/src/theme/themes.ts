@@ -47,14 +47,15 @@ const parchment = defineTheme({
   id: 'parchment',
   label: 'Пергамент',
   colors: {
-    background: '#eed1b9',
-    surface: '#F6D6BD',
-    text: '#0c131aff',
-    muted: 'rgba(84, 84, 84, 1)',
+    background: '#e9dac9',
+    surface: '#f4e7d7',
+    text: '#2b2119',
+    muted: '#8a7867',
     accent: '#997577',
-    border: '#997577',
+    border: '#d9c4ac',
   },
-  font: "'PixeloidSans', sans-serif",
+  // Книжная антиква: читаемо и в духе бумаги/пергамента. Системные шрифты — без CDN.
+  font: "Georgia, 'Palatino Linotype', 'Book Antiqua', 'Iowan Old Style', serif",
 })
 
 // --- Тёмная тема. Обрати внимание: НИКАКОЙ инверсии шкал, просто цвета ролей.
@@ -72,9 +73,37 @@ const midnight = defineTheme({
   font: "'SanFrancisco', system-ui, sans-serif",
 })
 
+const cozyPixelRpg = defineTheme({
+  id: 'cozy-pixel-rpg',
+  label: 'Cozy Pixel RPG',
+  colors: {
+    background: '#d6b78d',
+    surface: '#f8dfbf',
+    text: '#2f2419',
+    muted: '#6b513b',
+    accent: '#6f9f5f',
+    border: '#7b4f2f',
+    accentText: '#fffbea',
+  },
+  font: "'PixeloidSans', 'Pixel', sans-serif",
+})
 
+const forestGuild = defineTheme({
+  id: 'forest-guild',
+  label: 'Forest Guild',
+  colors: {
+    background: '#b8a170',
+    surface: '#e8d8b6',
+    text: '#26301f',
+    muted: '#63704c',
+    accent: '#8c5f3d',
+    border: '#53623a',
+    accentText: '#fff4dc',
+  },
+  font: "Georgia, 'Palatino Linotype', 'Book Antiqua', 'Iowan Old Style', serif",
+})
 
-export const THEMES: Theme[] = [parchment, midnight]
+export const THEMES: Theme[] = [parchment, midnight, cozyPixelRpg, forestGuild]
 
 export const DEFAULT_THEME_ID = parchment.id
 

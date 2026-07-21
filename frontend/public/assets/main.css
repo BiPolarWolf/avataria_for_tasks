@@ -244,3 +244,42 @@ body {
 .list_color {
     background-color: #f5d5bc;
 }
+
+
+/* ============================================================================
+   Правая панель действий (aside) — общий каркас для *Aside-компонентов
+   (NotesListAside, NoteCreateAside, TasksListAside, TaskCreateAside, теги…).
+   ============================================================================ */
+.aside {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.5rem;
+}
+.aside__eyebrow {
+    margin: 0.6rem 0 0.1rem;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: var(--muted);
+}
+.aside__cta {
+    width: 100%;
+    justify-content: center;
+    text-decoration: none;
+}
+.aside__hint {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: var(--muted);
+}
+
+/* Сообщение о неудачной загрузке данных (формы редактирования и т.п.). */
+.load-error {
+    padding: 1rem;
+    border: 3px solid var(--border-strong);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    color: var(--text);
+}

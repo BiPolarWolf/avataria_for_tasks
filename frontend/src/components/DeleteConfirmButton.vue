@@ -17,6 +17,10 @@ interface Props {
 
 const props = defineProps<Props>()
 
+// Необязательное событие: слушатели (например, форма редактирования) могут
+// среагировать на удаление — уйти со страницы. Списки его просто игнорируют.
+const emit = defineEmits<{ deleted: [] }>()
+
 const visible = ref(false)
 const toast = useToast()
 const queryClient = useQueryClient()
@@ -38,6 +42,7 @@ const { mutate, isPending } = useMutation({
       detail: `Он больше не отображается в списке `,
       life: 3000
     })
+    emit('deleted')
   },
   onError: (error: unknown) => {
     const detail = axios.isAxiosError(error)
