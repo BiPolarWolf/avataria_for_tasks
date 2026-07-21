@@ -24,6 +24,10 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           source: "."
           target: "/home/apps/hello-world-project"
+          # Чистим целевую папку перед копированием, чтобы удалённые из репозитория
+          # файлы не оставались на сервере (иначе они попадают в docker build).
+          # БД хранится в именованном томе postgres_data, её это не затрагивает.
+          rm: true
 
       # 3. Подключаемся к серверу по SSH и перезапускаем Docker-контейнеры
       - name: Executing remote ssh commands to deploy
