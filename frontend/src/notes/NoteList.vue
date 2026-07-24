@@ -1,19 +1,26 @@
 <script setup lang="ts">
 import MyCard from '@/components/MyCard.vue'
 import { formatShortDate } from '@/utils/general'
-import { ref, type Ref } from 'vue'
+import { computed, ref, type Ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Tag from '@/tags/Tag.vue'
 import ApiContainer from '@/components/ApiContainer.vue'
 import DeleteConfirmButton from '@/components/DeleteConfirmButton.vue'
 import MyButton from '@/components/MyButton.vue'
 import { useSettingsStore } from '@/stores/settings'
+import { useFiltersStore, buildFilterQuery } from '@/stores/filters'
 
 
 const settingsStore = useSettingsStore()
+const filtersStore = useFiltersStore()
 const router = useRouter()
 
 const {showNotesText }  = settingsStore
+
+// Фильтр из стора превращаем в query-строку и ключ кэша.
+// Запрос идёт в базу; ключ включает фильтр, поэтому список обновляется при его смене.
+const apiUrl = computed(() => `/notes/${buildFilterQuery(filtersStore.notes)}`)
+const queryKeys = computed(() => ['notes', filtersStore.notes.search.trim(), [...filtersStore.notes.tag_ids]])
 
 const edit_note = (note_id:number) => {
   router.push({ name: 'notes-edit', params: { id: note_id } })
@@ -32,8 +39,10 @@ const delete_from_opened = (note_id:number) => {
 </script>
 
 <template>
-  <ApiContainer apiUrl="/notes/"  :queryKeys="['notes']">
+  <ApiContainer :apiUrl="apiUrl"  :queryKeys="queryKeys">
     <template v-slot:default="{ data }">
+      <p v-if="!data.length" class="empty-hint">Ничего не найдено. Попробуйте изменить фильтр.</p>
+
       <MyCard class="my-3" v-for="note in data">
       <template #content>
         
@@ -116,6 +125,11 @@ const delete_from_opened = (note_id:number) => {
 
 .task_description {
   white-space: pre-wrap;
+}
+
+.empty-hint {
+  padding: 1rem;
+  color: var(--muted);
 }
 
 </style>

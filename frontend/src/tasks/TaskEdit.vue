@@ -5,20 +5,25 @@ import { useQuery } from '@tanstack/vue-query'
 import { ProgressSpinner } from 'primevue'
 import api from '@/client'
 import MyForm from '@/components/MyForm.vue'
+import MyTextInput from '@/components/inputs/MyTextInput.vue'
 import MyTextArea from '@/components/inputs/MyTextArea.vue'
 import MyRatingInput from '@/components/inputs/MyRatingInput.vue'
+import MySelect from '@/components/inputs/MySelect.vue'
 
 // id приходит из маршрута /tasks/:id/edit (props: true в роутере).
 const props = defineProps<{ id: string }>()
 const router = useRouter()
 
 const taskId = Number(props.id)
+const tagsApiUrl = 'tags/'
 
 const data = reactive({
   id: taskId,
+  title: '',
   description: '',
   complexity: 1,
   status: false,
+  tag_ids: [] as number[],
 })
 
 // Подгружаем задачу по id и заполняем форму.
@@ -32,9 +37,11 @@ watch(
   (t) => {
     if (!t) return
     data.id = t.id
+    data.title = t.title ?? ''
     data.description = t.description
     data.complexity = t.complexity
     data.status = t.status
+    data.tag_ids = (t.tags ?? []).map((tag: { id: number }) => tag.id)
   },
   { immediate: true },
 )
@@ -57,6 +64,8 @@ const success_function = () => {
     :mutated_keys_list="['tasks']"
     success_message="Задача обновлена"
   >
+    <MyTextInput v-model="data.title" label="Заголовок (необязательно)" />
+
     <MyTextArea
       :is_restricted="true"
       v-model="data.description"
@@ -65,5 +74,14 @@ const success_function = () => {
     />
 
     <MyRatingInput v-model="data.complexity" label="Сложность" />
+
+    <MySelect
+      option-label="text"
+      option-value="id"
+      v-model="data.tag_ids"
+      multiple
+      :api-url="tagsApiUrl"
+      label="Теги"
+    />
   </MyForm>
 </template>

@@ -46,9 +46,9 @@ class TagService:
     def delete_tag(self, tag_id: int, current_user: User) -> Tag:
         tag = self.get_tag_by_id(tag_id, current_user)
 
-        if tag.notes:
+        if tag.notes or tag.tasks:
             raise TagAttachedToNotesError(
-                "Нельзя удалить тег, пока он привязан к запискам. Сначала отвяжите тег."
+                "Нельзя удалить тег, пока он привязан к записям или задачам. Сначала отвяжите тег."
             )
 
         return self.repo.delete_tag(tag)

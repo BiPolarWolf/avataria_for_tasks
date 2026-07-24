@@ -13,8 +13,13 @@ class NoteService:
     def __init__(self, db: Session):
         self.repo = NoteRepository(db)
 
-    def get_notes(self, current_user: User):
-        return self.repo.get_notes_all(current_user)
+    def get_notes(
+        self,
+        current_user: User,
+        search: str | None = None,
+        tag_ids: list[int] | None = None,
+    ):
+        return self.repo.get_notes_all(current_user, search, tag_ids)
 
     def get_note(self, note_id: int, current_user: User) -> Note:
         note = self.repo.get_note_by_id(note_id)

@@ -1,6 +1,10 @@
 <script setup lang="ts">
-// Правая панель раздела «Задачи»: действия над списком.
+// Правая панель раздела «Задачи»: действия над списком + фильтр.
 // Создание вынесено на маршрут /tasks/create (форма открывается в центре).
+import ListFilter from '@/components/ListFilter.vue'
+import { useFiltersStore } from '@/stores/filters'
+
+const filtersStore = useFiltersStore()
 </script>
 
 <template>
@@ -11,6 +15,10 @@
     </RouterLink>
 
     <p class="aside__eyebrow">Фильтр</p>
-    <p class="aside__hint">Фильтр по сложности появится здесь.</p>
+    <ListFilter
+      :filter="filtersStore.tasks"
+      search-placeholder="Найти по заголовку и описанию..."
+      @reset="filtersStore.resetTasks"
+    />
   </div>
 </template>

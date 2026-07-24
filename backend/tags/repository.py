@@ -33,6 +33,7 @@ class TagRepository:
 
     def untie_tag_from_notes(self, tag: Tag) -> Tag:
         tag.notes.clear()
+        tag.tasks.clear()
         return self.__create_or_update_tag(tag)
 
     def delete_tag(self, tag: Tag) -> Tag:

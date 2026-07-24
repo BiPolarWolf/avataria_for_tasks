@@ -1,7 +1,7 @@
 from typing import List
 
 from sqlalchemy.orm import selectinload
-from sqlmodel import Session, desc, select
+from sqlmodel import Session, desc, or_, select
 
 from tags.models import Tag
 from users.models import User
@@ -17,13 +17,28 @@ class NoteRepository:
         query = select(Note).options(selectinload(Note.tags)).where(Note.id == note_id)
         return self.db.exec(query).first()
 
-    def get_notes_all(self, current_user: User) -> List[Note]:
+    def get_notes_all(
+        self,
+        current_user: User,
+        search: str | None = None,
+        tag_ids: list[int] | None = None,
+    ) -> List[Note]:
         query = (
             select(Note)
             .options(selectinload(Note.tags))
             .where(Note.author_id == current_user.id)
             .order_by(desc(Note.date_update))
         )
+
+        # Поиск по заголовку и тексту — на стороне БД.
+        if search:
+            pattern = f"%{search}%"
+            query = query.where(or_(Note.title.ilike(pattern), Note.text.ilike(pattern)))
+
+        # Фильтр по тегам: запись должна иметь хотя бы один из выбранных тегов.
+        if tag_ids:
+            query = query.where(Note.tags.any(Tag.id.in_(tag_ids)))
+
         return self.db.exec(query).all()
 
     def get_user_tags_by_ids(self, current_user: User, tag_ids: list[int]) -> List[Tag]:

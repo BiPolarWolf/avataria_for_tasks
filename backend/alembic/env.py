@@ -1,3 +1,4 @@
+import os
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -8,6 +9,12 @@ from alembic import context
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
+
+# Берём адрес базы из переменной окружения DATABASE_URL (Postgres на проде).
+# Если её нет — остаётся значение из alembic.ini (локальный sqlite).
+database_url = os.getenv("DATABASE_URL")
+if database_url:
+    config.set_main_option("sqlalchemy.url", database_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -22,7 +29,7 @@ from sqlmodel import SQLModel
 # Замени 'models' на точное имя файла/модуля, где написан class Task(SQLModel, table=True)
 # Если файл называется database.py, то: from database import Task
 from tasks.models import Task
-from tags.models import NoteTagLink, Tag
+from tags.models import NoteTagLink, TaskTagLink, Tag
 from notes.models import Note
 from users.models import RefreshToken, User
 # =========================

@@ -1,6 +1,10 @@
 <script setup lang="ts">
-// Правая панель раздела «Записи»: действия над списком.
+// Правая панель раздела «Записи»: действия над списком + фильтр.
 // Создание вынесено на отдельный маршрут /notes/create (форма открывается в центре).
+import ListFilter from '@/components/ListFilter.vue'
+import { useFiltersStore } from '@/stores/filters'
+
+const filtersStore = useFiltersStore()
 </script>
 
 <template>
@@ -11,6 +15,10 @@
     </RouterLink>
 
     <p class="aside__eyebrow">Фильтр</p>
-    <p class="aside__hint">Фильтр по тегам и сортировка появятся здесь.</p>
+    <ListFilter
+      :filter="filtersStore.notes"
+      search-placeholder="Найти по заголовку и тексту..."
+      @reset="filtersStore.resetNotes"
+    />
   </div>
 </template>

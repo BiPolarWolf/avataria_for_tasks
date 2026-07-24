@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Query, status
 
 from database import SessionDep
 from exceptions import NoteIncorrectAuthorError, NoteNotFoundError, ServiceError, TagNotFoundError
@@ -15,9 +15,14 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[NoteRead])
-def get_notes(user: current_active_user_dep, session: SessionDep):
+def get_notes(
+    user: current_active_user_dep,
+    session: SessionDep,
+    search: str | None = Query(default=None),
+    tag_ids: list[int] = Query(default=[]),
+):
     service = NoteService(session)
-    return service.get_notes(user)
+    return service.get_notes(user, search=search, tag_ids=tag_ids)
 
 
 @router.get("/{note_id}", response_model=NoteRead)

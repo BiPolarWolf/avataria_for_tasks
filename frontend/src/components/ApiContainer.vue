@@ -2,10 +2,11 @@
 import api from '@/client';
 import { useQuery } from '@tanstack/vue-query';
 import { ProgressSpinner } from 'primevue';
+import { computed } from 'vue';
 
 interface Props {
     apiUrl: string
-    queryKeys: string[]
+    queryKeys: (string | number | number[])[]
 }
 
 const props = defineProps<Props>()
@@ -28,9 +29,10 @@ const fetchFunc = async () => {
   return response.data
 }
 
-// Основной хук Vue Query
+// Основной хук Vue Query.
+// queryKey — computed, чтобы запрос перезапускался при смене фильтров/статуса.
 const {isPending, isFetching, isError, data, error } = useQuery({
-  queryKey: props.queryKeys, // Разделяем кэш по статусу задач
+  queryKey: computed(() => props.queryKeys), // Разделяем кэш по статусу и фильтрам
   queryFn: fetchFunc, // Сама функция запроса
   retry: 1,            // Количество попыток при ошибке
 })

@@ -7,10 +7,16 @@ from users.models import User
 
 if TYPE_CHECKING:
     from notes.models import Note
+    from tasks.models import Task
 
 
 class NoteTagLink(SQLModel, table=True):
     note_id: int | None = Field(default=None, foreign_key="note.id", primary_key=True)
+    tag_id: int | None = Field(default=None, foreign_key="tag.id", primary_key=True)
+
+
+class TaskTagLink(SQLModel, table=True):
+    task_id: int | None = Field(default=None, foreign_key="task.id", primary_key=True)
     tag_id: int | None = Field(default=None, foreign_key="tag.id", primary_key=True)
 
 
@@ -31,6 +37,7 @@ class Tag(SQLModel, table=True):
     icon: str | None = Field(default=None, max_length=255)
 
     notes: List["Note"] = Relationship(back_populates="tags", link_model=NoteTagLink)
+    tasks: List["Task"] = Relationship(back_populates="tags", link_model=TaskTagLink)
 
 
 class TagCreate(SQLModel):
