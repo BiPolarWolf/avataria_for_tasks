@@ -45,6 +45,8 @@ const show = () => {
 <style scoped>
 /* Стили для самого контейнера карты */
 .custom-card {
+    /* Точка отсчёта для действий, вынесенных из потока (CardSpeedDial). */
+    position: relative;
     text-align: left;
     background-color: var(--surface);
     border: 2.5px solid var(--border);

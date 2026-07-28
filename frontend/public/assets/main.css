@@ -179,15 +179,18 @@ body {
     --ui-btn-text: var(--accent-text);
 }
 
+/* Второстепенные действия («Отмена», «Сбросить фильтр»): заливка остаётся
+   узнаваемо приглушённой (muted), но разбавлена поверхностью, а бордер —
+   тонированный, а не цвета текста. Тише акцентных кнопок, но не сливается. */
 .ui-btn--secondary,
 .ui-btn.p-button-secondary {
-    --ui-btn-bg-top: color-mix(in srgb, var(--muted) 60%, white);
-    --ui-btn-bg-bottom: var(--muted);
-    --ui-btn-bg-top-hover: color-mix(in srgb, var(--muted) 40%, white);
-    --ui-btn-bg-bottom-hover: color-mix(in srgb, var(--muted) 80%, white);
-    --ui-btn-border: var(--text);
-    --ui-btn-border-hover: var(--text);
-    --ui-btn-text: var(--accent-text);
+    --ui-btn-bg-top: color-mix(in srgb, var(--muted) 32%, var(--surface));
+    --ui-btn-bg-bottom: color-mix(in srgb, var(--muted) 48%, var(--surface));
+    --ui-btn-bg-top-hover: color-mix(in srgb, var(--muted) 24%, var(--surface));
+    --ui-btn-bg-bottom-hover: color-mix(in srgb, var(--muted) 38%, var(--surface));
+    --ui-btn-border: color-mix(in srgb, var(--muted) 45%, var(--border));
+    --ui-btn-border-hover: color-mix(in srgb, var(--muted) 70%, var(--border));
+    --ui-btn-text: var(--text);
 }
 
 .ui-btn--success,

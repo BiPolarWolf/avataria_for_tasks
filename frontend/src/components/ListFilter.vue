@@ -73,7 +73,7 @@ const reset = () => {
       @update:model-value="updateTags"
     />
 
-    <MyButton size="small" severity="secondary" class="list-filter__reset" @click="reset">
+    <MyButton size="normal" severity="secondary" class="list-filter__reset" @click="reset">
       Сбросить фильтр
     </MyButton>
   </div>
