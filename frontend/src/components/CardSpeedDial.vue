@@ -55,12 +55,11 @@ withDefaults(defineProps<Props>(), {
 </template>
 
 <style scoped>
-/* Дайл выносим из потока в угол карточки (у неё position: relative),
-   иначе одна кнопка занимала бы целую строку футера. */
+/* Дайл живёт в потоке, отдельной строкой снизу карточки: вне потока он
+   ложился поверх контента и перекрывал теги. */
 .card-speeddial {
-  position: absolute;
-  bottom: 0.75rem;
-  right: 0.75rem;
+  display: flex;
+  justify-content: flex-end;
 }
 
 /* Обвязка у всех кнопок дайла одна и та же — форма, бордер, тень.
