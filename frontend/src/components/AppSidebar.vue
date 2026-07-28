@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
 import PetWidget from '@/components/PetWidget.vue'
+import logoUrl from '@/assets/logo-horizontal.png'
 
 const authStore = useAuthStore()
 
@@ -18,6 +19,12 @@ const nav = [
 
 <template>
   <aside class="sidebar">
+    <!-- Логотип: на светлой подложке, потому что сам он нарисован тёмным
+         текстом под светлый фон, а сайдбар брендово-тёмный. -->
+    <div class="brand">
+      <img class="brand__img" :src="logoUrl" alt="BreadCrumbs Manager" />
+    </div>
+
     <!-- Виджет питомца (геймификация) -->
     <PetWidget />
 
@@ -58,6 +65,21 @@ const nav = [
   background-color: var(--brand-deep);
   color: var(--brand-text);
   overflow-y: auto;
+}
+
+/* --- Логотип --- */
+.brand {
+  flex-shrink: 0;
+  padding: 0.5rem 0.7rem;
+  border: 2px solid color-mix(in srgb, var(--brand-text) 25%, transparent);
+  border-radius: 12px;
+  /* Почти белая подложка с лёгким тёплым оттенком от акцента темы. */
+  background: color-mix(in srgb, #fff 92%, var(--accent));
+}
+.brand__img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* --- Навигация --- */
