@@ -10,6 +10,7 @@ import api from '@/client'
 interface Props {
   taskId: number
   taskDescription?: string
+  hideTrigger?: boolean
 }
 
 const props = defineProps<Props>()
@@ -56,10 +57,14 @@ const { mutate, isPending } = useMutation({
 const confirmComplete = () => {
   mutate()
 }
+
+defineExpose({
+  open: () => { visible.value = true },
+})
 </script>
 
 <template>
-  <MyButton size="small" severity="success" @click="visible = true">
+  <MyButton v-if="!hideTrigger" size="small" severity="success" @click="visible = true">
     Выполнить <i class="pi pi-check"></i>
   </MyButton>
 

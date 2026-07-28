@@ -13,6 +13,7 @@ interface Props {
     queryKey : string
     object_id : number
     size?: string
+    hideTrigger?: boolean
 }
 
 const props = defineProps<Props>()
@@ -63,10 +64,14 @@ const { mutate, isPending } = useMutation({
 const confirmDelete = () => {
   mutate()
 }
+
+defineExpose({
+  open: () => { visible.value = true },
+})
 </script>
 
 <template>
-  <MyButton :size="size" severity="danger" @click="visible = true">
+  <MyButton v-if="!hideTrigger" :size="size" severity="danger" @click="visible = true">
     Удалить <img src="@/assets/icons/Trashbin.png" width="18" alt="">
   </MyButton>
 

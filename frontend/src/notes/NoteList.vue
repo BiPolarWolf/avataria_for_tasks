@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 import Tag from '@/tags/Tag.vue'
 import ApiContainer from '@/components/ApiContainer.vue'
 import DeleteConfirmButton from '@/components/DeleteConfirmButton.vue'
-import MyButton from '@/components/MyButton.vue'
+import CardSpeedDial, { type CardSpeedDialItem } from '@/components/CardSpeedDial.vue'
 import { useSettingsStore } from '@/stores/settings'
 import { useFiltersStore, buildFilterQuery } from '@/stores/filters'
 
@@ -30,11 +30,34 @@ const opened_notes : Ref<number[]> = ref([])
 
 const push_to_opened = (note_id:number) => {
   opened_notes.value.push(note_id)
-} 
+}
 
 const delete_from_opened = (note_id:number) => {
   opened_notes.value = opened_notes.value.filter(id => id !== note_id)
-} 
+}
+
+// Диалог удаления живёт в скрытом экземпляре DeleteConfirmButton (hide-trigger) —
+// SpeedDial по клику на пункт меню лишь открывает его через ref.
+const deleteRefs: Record<number, InstanceType<typeof DeleteConfirmButton> | null> = {}
+
+const buildActions = (note: { id: number; text: string }): CardSpeedDialItem[] => {
+  const items: CardSpeedDialItem[] = []
+
+  if (!showNotesText) {
+    items.push(
+      opened_notes.value.includes(note.id)
+        ? { label: 'Скрыть', icon: 'pi pi-eye-slash', severity: 'secondary', command: () => delete_from_opened(note.id) }
+        : { label: 'Подробнее', icon: 'pi pi-eye', severity: 'secondary', command: () => push_to_opened(note.id) }
+    )
+  }
+
+  items.push(
+    { label: 'Изменить', icon: 'pi pi-pencil', severity: 'info', command: () => edit_note(note.id) },
+    { label: 'Удалить', icon: 'pi pi-trash', severity: 'danger', command: () => deleteRefs[note.id]?.open() },
+  )
+
+  return items
+}
 
 </script>
 
@@ -43,7 +66,7 @@ const delete_from_opened = (note_id:number) => {
     <template v-slot:default="{ data }">
       <p v-if="!data.length" class="empty-hint">Ничего не найдено. Попробуйте изменить фильтр.</p>
 
-      <MyCard class="my-3" v-for="note in data">
+      <MyCard class="my-3" v-for="note in data" :key="note.id">
       <template #content>
         
 
@@ -75,32 +98,14 @@ const delete_from_opened = (note_id:number) => {
         </template>
 
         <template #actions>
-
-          <template v-if=" !showNotesText">
-              <template v-if="!opened_notes.includes(note.id)">
-                <MyButton 
-                  size="small"
-                  @click="() => push_to_opened(note.id)" 
-                >подробнее</MyButton>
-              </template>
-              <template v-else>
-                <MyButton 
-                  size="small"
-                  @click="() => delete_from_opened(note.id)" 
-                >скрыть</MyButton>
-              </template>
-          </template>
-
-          <MyButton size="small" severity="info" v-on:click="() => edit_note(note.id)"  class="detail_button">
-              Изменить  <img src="@/assets/icons/Wrench.png" style="width: 18px;" alt="">
-          </MyButton>
-
           <DeleteConfirmButton
-            size="small"
+            :ref="(el: any) => { deleteRefs[note.id] = el }"
+            hide-trigger
             :object_id="note.id"
             query-key="notes"
             :description="note.text"
           />
+          <CardSpeedDial :items="buildActions(note)" />
         </template>
 
     </MyCard>
@@ -110,12 +115,6 @@ const delete_from_opened = (note_id:number) => {
 </template>
 
 <style scoped>
-
-.detail_button{
-  background-color: var(--muted);
-  border: 4px solid var(--text);
-  color: var(--accent-text);
-}
 
 .task_actions {
   display: flex;

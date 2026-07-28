@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MyCard from '@/components/MyCard.vue'
-import MyButton from '@/components/MyButton.vue'
 import Tag from '@/tags/Tag.vue'
+import CardSpeedDial, { type CardSpeedDialItem } from '@/components/CardSpeedDial.vue'
 import { formatShortDate } from '@/utils/general'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
@@ -34,6 +34,32 @@ const queryKeys = computed(() => [
 const edit_task = (task_id:number) => {
   router.push({ name: 'tasks-edit', params: { id: task_id } })
 };
+
+// Диалоги подтверждения живут в скрытых экземплярах кнопок (hide-trigger) —
+// SpeedDial по клику на пункт меню лишь открывает нужный диалог через ref.
+const completeRefs: Record<number, InstanceType<typeof TaskCompleteConfirmButton> | null> = {}
+const deleteRefs: Record<number, InstanceType<typeof DeleteConfirmButton> | null> = {}
+
+const buildActions = (task: { id: number; description: string }): CardSpeedDialItem[] => [
+  {
+    label: 'Изменить',
+    icon: 'pi pi-pencil',
+    severity: 'info',
+    command: () => edit_task(task.id),
+  },
+  {
+    label: 'Выполнить',
+    icon: 'pi pi-check',
+    severity: 'success',
+    command: () => completeRefs[task.id]?.open(),
+  },
+  {
+    label: 'Удалить',
+    icon: 'pi pi-trash',
+    severity: 'danger',
+    command: () => deleteRefs[task.id]?.open(),
+  },
+]
 </script>
 
 
@@ -44,7 +70,7 @@ const edit_task = (task_id:number) => {
 
         <p v-if="!data.length" class="empty-hint">Ничего не найдено. Попробуйте изменить фильтр.</p>
 
-        <MyCard class="my-3" v-for="task in data">
+        <MyCard class="my-3" v-for="task in data" :key="task.id">
           <template #content>
           <p class="task_description">{{ task.description }}</p>
           <br>
@@ -68,21 +94,20 @@ const edit_task = (task_id:number) => {
 
           <template #actions>
             <template v-if="props.status === 'active'">
-
-              <MyButton
-              size="small" severity="info" v-on:click="() => edit_task(task.id)"  class="detail_button">
-                  Изменить  <img src="@/assets/icons/Wrench.png" style="width: 18px;" alt="">
-              </MyButton>
-
               <TaskCompleteConfirmButton
+                :ref="(el: any) => { completeRefs[task.id] = el }"
+                hide-trigger
                 :task-id="task.id"
                 :task-description="task.description"
               />
               <DeleteConfirmButton
+                :ref="(el: any) => { deleteRefs[task.id] = el }"
+                hide-trigger
                 :object_id="task.id"
                 :description="task.description"
                 :query-key="'tasks'"
               />
+              <CardSpeedDial :items="buildActions(task)" />
             </template>
             <template v-else>
               <span>Завершено</span>
@@ -100,13 +125,6 @@ const edit_task = (task_id:number) => {
 </template>
 
 <style scoped>
-
-.detail_button{
-  background-color: var(--muted);
-  border: 4px solid var(--text);
-  color: var(--accent-text);
-}
-
 
 .task_description {
   white-space: pre-wrap;
